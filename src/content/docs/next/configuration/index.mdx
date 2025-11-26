@@ -70,6 +70,21 @@ Directory where rmpc should search for `lrc` files. Please see the <a href={path
 Offset to apply to all lyrics globally in milliseconds. Defaults to 0.
 Negative offset means that the lyrics will appear later and positive means they will appear sooner.
 
+### enable_lyrics_index
+
+<ConfigValue name="enable_lyrics_index" type="bool" />
+
+Whether rmpc should index your `lyrics_dir` to be able to match lyrics to `.lrc` by the metadata
+(artist, title, album, length). Disabling this also disables `enable_lyrics_hot_reload`. Only disable
+this if you experience performance issues with very large number of files in your `lyrics_dir`.
+Defaults to `true`.
+
+### enable_lyrics_hot_reload
+
+<ConfigValue name="enable_lyrics_hot_reload" type="bool" />
+
+Whether rmpc should watch the <a href={path("configuration/#lyrics_dir")}>lyrics_dir</a> for changes and automatically load new files or update lyrics from changed files. Disabled by default.
+
 ### mpd_read_timeout_ms
 
 <ConfigValue name="mpd_read_timeout_ms" type="number" />
@@ -182,12 +197,6 @@ Whether rmpc should watch its config directory and reload the config when it cha
 runtime but some will still require you to restart rmpc. These include things like album art method and MPD connection
 information.
 Config hot reload is enabled by default.
-
-### enable_lyrics_hot_reload
-
-<ConfigValue name="enable_lyrics_hot_reload" type="bool" />
-
-Whether rmpc should watch the <a href={path("configuration/#lyrics_dir")}>lyrics_dir</a> for changes and automatically load new files or update lyrics from changed files. Disabled by default.
 
 ### status_update_interval_ms
 
