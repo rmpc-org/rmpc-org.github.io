@@ -29,9 +29,9 @@ Below is a list of properties that can be changed.
 
 ### address
 
-<ConfigValue name="address" type={['"<ip>:<port>"', '"/path/to/socket"']} />
+<ConfigValue name="address" type={['"<ip>:<port>"', '"/path/to/socket"', '"@abstract_socket"']} />
 
-The address to connect to. Address can be either an IP address with a port or a UNIX domain socket path.
+The address to connect to. Address can be either an IP address with a port or a UNIX domain socket path. On Linux specifically, it's also possible to use abstract socket with a prefix of `@`.
 
 The order of precedence is as follows:
 
@@ -39,7 +39,7 @@ The order of precedence is as follows:
 2. `$MPD_HOST` and `$MPD_PORT` environment variables
     - If `$MPD_PORT` is not provided and `$MPD_HOST` starts with `~` or `/`, it is assumed to be a path to a unix socket
     - If `$MPD_PORT` is not provided and `$MPD_HOST` is an IP address and, the default port of `6600` is used
-    - Password can be provided via `$MPD_HOST` in the `password@host` format.
+    - Password can be provided via `$MPD_HOST` in the `password@host` format. For abstract socket, it should look like `password@@abstract_socket`.
 3. The `address` and `password` values from config file
 4. And finally, if none of the above are provided, the default of `127.0.0.1:6600` is used
 
