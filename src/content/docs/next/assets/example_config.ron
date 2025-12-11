@@ -30,6 +30,7 @@
         horizontal_align: Center,
     ),
     keybinds: (
+        clear: false,
         global: {
             ":":       CommandMode,
             ",":       VolumeDown,
