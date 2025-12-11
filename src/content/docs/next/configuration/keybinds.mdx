@@ -14,7 +14,7 @@ import { path } from "../data.ts";
 <ConfigValue
     name="keybinds"
     type="other"
-    customText="(global: <kebyinds_map>, navigation: <keybinds_map>, queue: <keybinds_map>)"
+    customText="(clear: <bool>, global: <kebyinds_map>, navigation: <keybinds_map>, queue: <keybinds_map>)"
 />
 
 Keybinds are configured in the config file. There are different keybinds for different panes and actions. Keybinds are
@@ -29,6 +29,17 @@ for more info.
 :::note
 All configured keybinds can also be triggered remotely using the `rmpc remote keybind` command.
 :::
+
+## clear
+
+<ConfigValue name="clear" type="boolean" />
+
+- When `true` - The default keybinds are all cleared first and then your configured keybinds are used.
+  Meaning only the keybinds in your config file will be available in rmpc.
+- When `false` - The default keybinds are kept and the keybinds from config file simply just
+  override/extend the defaults.
+
+Defaults to `false`.
 
 ## keybinds_map
 
