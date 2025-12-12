@@ -176,6 +176,11 @@ export default defineConfig({
                     label: "GitHub",
                     href: "https://github.com/mierak/rmpc",
                 },
+                {
+                    icon: "discord",
+                    label: "Discord",
+                    href: "https://discord.gg/9MAddPFqSF",
+                },
             ],
             customCss: ["./src/styles/custom.css"],
             components: {
