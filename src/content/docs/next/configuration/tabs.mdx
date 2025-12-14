@@ -9,6 +9,7 @@ import ConfigValue from "../../../../components/ConfigValue.tsx";
 import { path } from "../data.ts";
 import { Image } from "astro:assets";
 import example_property_pane from "../assets/example_property_pane.png";
+import example_border_title from "../assets/example_border_title.png";
 
 <ConfigValue name="tabs" customText="<tab[]>" />
 
@@ -34,7 +35,7 @@ Each tab has a name which will be displayed in the tab bar and can be used in th
 <ConfigValue name="pane" type={["Pane", "Split", "Component"]} link="#pane--split--component" />
 
 - `Pane(<pane>)` - Displays the given pane type itself. Available panes are listed in the <a href={path("configuration/panes")}>panes</a> page.
-- `Split(direction: Horizontal | Vertical, borders: <borders>, panes: <sub_pane[]>)` splits the pane into multiple [sub pane](#sub_pane)s. Each split has
+- `Split(direction: Horizontal | Vertical, panes: <sub_pane[]>)` splits the pane into multiple [sub pane](#sub_pane)s. Each split has
   a direction and a list of sub panes. More info on borders in [their section](#borders).
 - `Component("<component_name>")` - Displays a <a href={path("configuration/layout#components")}>component</a>
 
@@ -46,7 +47,10 @@ Determines which direction the pane will be split into.
 
 ### sub_pane
 
-<ConfigValue name="panes" customText="(size: '50%', borders: <borders>, pane: Pane | Split | Component" />
+<ConfigValue
+    name="panes"
+    customText="(size: '50%', borders: <borders>, border_title: <string>, border_title_style: <Style>, border_title_position: Top | Bottom, border_title_alignment: Left | Center | Right, pane: Pane | Split | Component"
+/>
 
 Sub panes for the given split. The size can be either percent (`50%`), exact value(`3`) or a
 ratio (`0.4r`).
@@ -58,15 +62,23 @@ ratio (`0.4r`).
   The result is then rounded and used as an exact size. Useful to for example keep `AlbumArt` as
   square size at all times. Note that the sizes here are in terminal cell width/height and not pixels.
 
-Each sub pane can be either a `Pane` or another `Split`. Sub pane can also have borders, more info in [their section](#borders).
+Each sub pane can be either a `Pane` or another `Split`. Sub pane can also have borders and border titles, more info in [their section](#borders).
 
-## borders
+## borders and border title
 
 <ConfigValue name="borders" type={['"NONE"', '"ALL"', '"LEFT"', '"RIGHT"', '"TOP"', '"BOTTOM"']} />
+<ConfigValue name="border_title" type="string" />
+<ConfigValue name="border_title_style" customText="<style>" />
+<ConfigValue name="border_title_alignment" type={["Left", "Center", "Right"]} />
+<ConfigValue name="border_title_position" type={["Top", "Bottom"]} />
 
 Define what borders are rendered around a tab or one of its panes. Default is `"NONE"`, meaning no borders.
 By specifying `"ALL"` the borders will be on all sides of the pane/tab. The above values can also be combined,
 if you for example want borders on the left and right, you can achieve it by defining `"LEFT | RIGHT"`.
+
+Additionally, the border can also have a title. The title can also be placed at the top or bottom
+border and aligned to left, right or center. Just the title will be drawn if you dont specify border
+for the chosen side but specify a border_title.
 
 :::note
 Note that you have to account for the borders if you use exact sizing of panes. For example if your Header
@@ -106,6 +118,86 @@ tabs: [
         ),
     ),
 ],
+```
+
+</details>
+
+### Borders with title
+
+Borders with title and styling.
+
+<Image src={example_border_title} width={500} alt="Example border title" />
+
+<details>
+
+<summary>Click to expand</summary>
+
+config.ron:
+
+```rust
+tabs: [
+(
+    name: "Test",
+    pane: Split(direction: Vertical, panes: [
+        (
+            size: "100%",
+            borders: "NONE",
+            pane: Pane(AlbumArt)
+        ),
+        (
+            size: "4",
+            borders: "ALL",
+            border_title: " Now Playing ",
+            border_title_style: (fg: "rgb(126, 144, 172)"),
+            border_title_position: Top,
+            border_title_alignment: Left,
+            pane: Split(direction: Vertical, panes: [
+                (
+                    size: "1",
+                    pane: Pane(Property(content: [
+                        ( kind: Property(Song(Title)), style: (fg: "rgb(235, 213, 121)", modifiers: "Bold") )
+                    ], align: Center))
+                ),
+                (
+                    size: "1",
+                    pane: Pane(Property(content: [
+                        ( kind: Property(Song(Artist)), style: (fg: "rgb(214, 119, 81)", modifiers: "Bold") ),
+                        ( kind: Text(" - "), style: (fg: "rgb(33, 120, 122)", modifiers: "Bold") ),
+                        ( kind: Property(Song(Album)), style: (fg: "rgb(33, 120, 122)", modifiers: "Bold") )
+                    ], align: Center))
+                ),
+            ])
+        ),
+        (
+            size: "1",
+            borders: "NONE",
+            pane: Pane(ProgressBar)
+        ),
+    ])
+),
+```
+
+theme.ron:
+
+```rust
+    background_color: "rgb(30, 30, 20)",
+    borders_style: (fg: "rgb(250,226,128)"),
+    progress_bar: (
+        symbols: ["", "█", "", "█", "" ],
+        track_style: (fg: "rgb(30, 30, 20)"),
+        elapsed_style: (fg: "rgb(250,226,128)"),
+        thumb_style: (fg: "rgb(250,226,128)", bg: "rgb(30, 30, 20)"),
+    ),
+    layout: Split(
+        direction: Vertical,
+        panes: [
+          (
+              pane: Pane(TabContent),
+              size: "100%",
+          ),
+        ],
+    ),
+    ... rest of the theme
 ```
 
 </details>
