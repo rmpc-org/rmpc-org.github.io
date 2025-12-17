@@ -155,6 +155,44 @@ Keybinds to use. The default keybinds are used if this property is absent. More 
 
 <LinkCard title="Configuring keybinds" description="Customize the keybinds" href={path("configuration/keybinds/")} />
 
+### normal_timeout_ms
+
+<ConfigValue name="normal_timeout_ms" type="number" />
+
+How long will rmpc wait before resolving the currently queued inputs. This timeout is for normal
+mode (basically everywhere except text inputs).
+
+This timeout only comes into play when a key sequence is ambiguous. When the sequence directly resolves
+to an action it is executed immedietally.
+
+Defaults to to `1000`.
+
+#### Example
+
+Consider following keymap:
+
+```rust
+"g":           Bottom,
+"gg":          Top,
+```
+
+If you press `g` nothing will happen but after the timeout elapses the action will resolve as `Bottom`.
+If you press `g` and `g` in quick succession the action will resolve as `Top`. If you press `g` and
+some other key for example `z` in quick succession nothing will happen and the input buffer will be
+cleared.
+
+### insert_timeout_ms
+
+<ConfigValue name="insert_timeout_ms" type="number" />
+
+How long will rmpc wait before resolving the currently queued inputs. This timeout is for insert mode
+(while typing inside an input). Insert mode only respects the `Close` and `Confirm` keybinds.
+
+This timeout only comes into play when a key sequence is ambiguous. When the sequence directly resolves
+to an action it is executed immedietally.
+
+Defaults to to `1000`.
+
 ### volume_step
 
 <ConfigValue name="volume_step" type="number" />

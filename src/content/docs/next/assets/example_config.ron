@@ -29,6 +29,8 @@
         vertical_align: Center,
         horizontal_align: Center,
     ),
+    normal_timeout_ms: 1000,
+    insert_timeout_ms: 1000,
     keybinds: (
         clear: false,
         global: {
