@@ -14,7 +14,7 @@ import { path } from "../data.ts";
 <ConfigValue
     name="keybinds"
     type="other"
-    customText="(clear: <bool>, global: <kebyinds_map>, navigation: <keybinds_map>, queue: <keybinds_map>)"
+    customText="(clear: <bool>, normal_timeout_ms: <number>, insert_timeout_ms: <number>, global: <kebyinds_map>, navigation: <keybinds_map>, queue: <keybinds_map>)"
 />
 
 Keybinds are configured in the config file. There are different keybinds for different panes and actions. Keybinds are
@@ -41,6 +41,34 @@ All configured keybinds can also be triggered remotely using the `rmpc remote ke
 
 Defaults to `false`.
 
+## normal_timeout_ms and insert_timeout_ms
+
+<ConfigValue name="normal_timeout_ms" type="number" />
+<ConfigValue name="insert_timeout_ms" type="number" />
+
+How long will rmpc wait before resolving the currently queued inputs. The timeout can be configured
+separately for insert mode (while typing inside an input) and normal mode (everywhere else). Insert mode
+only respects the `Close` and `Confirm` keybinds.
+
+This timeout only comes into play when a key sequence is ambiguous. When the sequence directly resolves
+to an action it is executed immedietally.
+
+Both default to to `1000`.
+
+### Example
+
+Consider following keymap:
+
+```rust
+"g":           Bottom,
+"gg":          Top,
+```
+
+If you press `g` nothing will happen but after the timeout elapses the action will resolve as `Bottom`.
+If you press `g` and `g` in quick succession the action will resolve as `Top`. If you press `g` and
+some other key for example `z` in quick succession nothing will happen and the input buffer will be
+cleared.
+
 ## keybinds_map
 
 <ConfigValue name="global" type="other" customText='{ "p": Play, "s": Stop, "X": Stop, ...}' />
@@ -54,6 +82,8 @@ Keybind syntax is similar to vim keybinds. To map action to letter `a` you write
 you would write `A`. To combine `a` key with a modifiers like `Ctrl` you would write `<C-a>` and likewise for an uppercase
 `A`: `<C-A>`. If a special key like `Tab` is used on its own you have to wrap it angle brackets like so: `<Tab>`.
 In case of the `Alt` key (sometimes also called `Meta` key) you would write `<A-x>`.
+
+To map a sequence of keys simple list them after each other, for example `<C-a>r` will trigger by pressing `ctrl+a` and then `r`.
 
 ### ExternalCommand
 
