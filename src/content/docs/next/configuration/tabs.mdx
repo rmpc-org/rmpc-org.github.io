@@ -10,6 +10,7 @@ import { path } from "../data.ts";
 import { Image } from "astro:assets";
 import example_property_pane from "../assets/example_property_pane.png";
 import example_border_title from "../assets/example_border_title.png";
+import example_collapsed_borders from "../assets/example_collapsed_borders.png";
 
 <ConfigValue name="tabs" customText="<tab[]>" />
 
@@ -49,7 +50,7 @@ Determines which direction the pane will be split into.
 
 <ConfigValue
     name="panes"
-    customText="(size: '50%', borders: <borders>, border_title: <property>[], border_title_position: Top | Bottom, border_title_alignment: Left | Center | Right, pane: Pane | Split | Component"
+    customText="(size: '50%', borders: <borders>, border_title: <property>[], border_title_position: Top | Bottom, border_title_alignment: Left | Center | Right, border_symbols: <border_symbols>, pane: Pane | Split | Component"
 />
 
 Sub panes for the given split. The size can be either percent (`50%`), exact value(`3`) or a
@@ -84,6 +85,77 @@ Note that you have to account for the borders if you use exact sizing of panes. 
 is supposed to be 2 rows tall and has borders at TOP and BOTTOM you must set its size as 4.
 :::
 
+### border_symbols
+
+<ConfigValue
+    name="border_symbols"
+    type={[
+        "Plain",
+        "Rounded",
+        "Double",
+        "Thick",
+        "Empty",
+        "Full",
+        "ProportionalWide",
+        "ProportionalTall",
+        "OneEighthWide",
+        "OneEighthTall",
+        "Custom(<border_set>)",
+        "Inherited(<border_set_inherited>)",
+        'Library("<name>")',
+    ]}
+/>
+
+You can define what symbol is used for what part of the border. This allows you to set borders to for
+example `Rounded` style.
+
+It also allows to define a completely custom symbols set with the `Custom` variant.
+
+The `Inherited` variant is the same as `Custom` except it has a required `parent` property where
+it will inherit all the symbols from its parent and you can override just the symbols you are interested
+in.
+
+The `Library("<name>")` variant uses a predefined custom symbol set defined in <a href={path("configuration/theme#border_symbol_sets")}>border_symbol_sets</a>
+
+You can refer to [ratatui's documentation](https://docs.rs/ratatui/latest/ratatui/prelude/symbols/border/index.html) to see more info about these variants.
+
+Examples:
+
+<details>
+
+<summary>Click to expand</summary>
+
+```rust
+border_symbols: Rounded,
+```
+
+```rust
+border_symbols: Library("custom_set"),
+```
+
+```rust
+border_symbols: Custom(
+    top_left: "a",
+    top_right: "b",
+    bottom_left: "c",
+    bottom_right: "d",
+    vertical_left: "|",
+    vertical_right: "|",
+    horizontal_top: "-",
+    horizontal_bottom: "-",
+),
+```
+
+```rust
+border_symbols: Inherited(
+    parent: Rounded,
+    bottom_left: "├",
+    bottom_right: "┤",
+),
+```
+
+</details>
+
 ## Examples
 
 Some tabs config examples below.
@@ -117,6 +189,75 @@ tabs: [
         ),
     ),
 ],
+```
+
+</details>
+
+### Collapsed rounded borders between panes
+
+Collapsed and connected borders between panes. The idea is to inherit the rounded border set and replace
+only the `bottom_left` and `bottom_right` symbol to be the connecting symbol. Then you use the border
+only on the sides where its needed to create collapsed borders.
+
+<Image src={example_collapsed_borders} width={800} alt="Example collapsed borders" />
+
+<details>
+
+<summary>Click to expand</summary>
+
+theme.ron:
+
+Note that this example does not work copy/paste style. It requires `header` and `progress_bar` components
+to be defined.
+
+```rust
+components: {
+    "header": Split(
+        // not included
+    ),
+    "progress_bar": Split(
+        // not included
+    ),
+},
+border_symbol_sets: {
+    "rounded_collapsed_bottom": (
+        parent: Rounded,
+        bottom_left: "├",
+        bottom_right: "┤",
+    ),
+},
+layout: Split(
+    direction: Vertical,
+    panes: [
+        (
+            size: "4",
+            borders: "ALL",
+            border_symbols: Library("rounded_collapsed_bottom"),
+            pane: Component("header"),
+        ),
+        (
+            size: "2",
+            borders: "LEFT | RIGHT | BOTTOM",
+            border_symbols: Library("rounded_collapsed_bottom"),
+            pane: Pane(Tabs),
+        ),
+        (
+            size: "100%",
+            borders: "LEFT | RIGHT | BOTTOM",
+            border_symbols: Library("rounded_collapsed_bottom"),
+            background_color: "red",
+            pane: Pane(TabContent),
+        ),
+        (
+            size: "2",
+            borders: "LEFT | RIGHT | BOTTOM",
+            border_symbols: Rounded,
+            border_title_position: Top,
+            pane: Component("progress_bar"),
+        ),
+    ]
+),
+... rest of the theme
 ```
 
 </details>
