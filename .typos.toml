@@ -1,0 +1,6 @@
+[default]
+extend-ignore-re = [
+	"(?i)iterm",
+	"(?i)ratatui",
+]
+

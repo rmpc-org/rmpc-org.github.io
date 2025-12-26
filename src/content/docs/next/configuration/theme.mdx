@@ -85,6 +85,37 @@ or `album` are different from the previous song. Defaults to `None`.
 <ConfigValue name="draw_borders" type="boolean" />
 Whether to draw borders in the UI.
 
+### border_symbol_sets
+
+<ConfigValue name="border_symbol_sets" customText="Map<string, <border_set>>" />
+
+Allows you to define reusable border symbol sets which can be used with the `Library("<name>")` variant
+in your pane's `border_symbols`.
+
+#### Example
+
+Two border symbol sets, the first one is completely custom. The latter inherits every symbol from
+`Rounded` borders and overrides just the `top_left` symbol.
+
+```rust
+border_symbol_sets: {
+    "letters_in_corners": (
+        top_left: "a",
+        top_right: "b",
+        bottom_left: "c",
+        bottom_right: "d",
+        vertical_left: "|",
+        vertical_right: "|",
+        horizontal_top: "-",
+        horizontal_bottom: "-",
+    ),
+    "a_in_top_left_rest_rounded": (
+        parent: Rounded,
+        top_left: "a",
+    ),
+},
+```
+
 ### symbols
 
 Symbols to use in the various browser panes (artist, search, ...)
