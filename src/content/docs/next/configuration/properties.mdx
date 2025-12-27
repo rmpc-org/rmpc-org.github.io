@@ -128,6 +128,18 @@ about parameters and examples. All the examples below assume that the properties
             example: '(kind: Property(Song(Position))),'
         },
         {
+            cells: ["`SampleRate()`", "Sample rate of the file"],
+            example: '(kind: Property(Song(SampleRate()))),'
+        },
+        {
+            cells: ["`Bits()`", "Bit depth (bits per sample) of the file"],
+            example: '(kind: Property(Song(Bits()))),'
+        },
+        {
+            cells: ["`Channels()`", "Channel count of the file"],
+            example: '(kind: Property(Song(Channels()))),'
+        },
+        {
             cells: ["`Other(value)`", "Display any arbitrary metadata tag supported by MPD"],
             parameters: ["`value`: String, required, name of the tag to display"],
             example: '(kind: Property(Song(Other("albumartist")))),',
@@ -269,6 +281,18 @@ about parameters and examples. All the examples below assume that the properties
         {
             cells: ["`InputBuffer()`", "Currently queued inputs"],
             example: '(kind: Property(Status(InputBuffer()))),'
+        },
+        {
+            cells: ["`SampleRate()`", "Sample rate of the currently playing file"],
+            example: '(kind: Property(Status(SampleRate()))),'
+        },
+        {
+            cells: ["`Bits()`", "Bit depth (bits per sample) of the currently playing file"],
+            example: '(kind: Property(Status(Bits()))),'
+        },
+        {
+            cells: ["`Channels()`", "Channel count of the currently playing file"],
+            example: '(kind: Property(Status(Channels()))),'
         },
     ]}
 
