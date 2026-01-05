@@ -94,9 +94,9 @@
             (size: "3", borders: "ALL", border_symbols: Library("rounded_collapsed_bottom"),
                  pane: Split(direction: Vertical, panes: [
                     (size: "1", borders: "NONE", pane: Split(direction: Horizontal, panes: [
-                    (size: "10%", borders: "NONE", pane: Component("custom_header_left")),
-                    (size: "80%%", borders: "NONE", pane: Pane(Tabs)),
-                    (size: "10%%", borders: "NONE", pane: Component("custom_header_right")),
+                    (size: "11%", borders: "NONE", pane: Component("custom_header_left")),
+                    (size: "78%%", borders: "NONE", pane: Pane(Tabs)),
+                    (size: "11%%", borders: "NONE", pane: Component("custom_header_right")),
                             ])
                     ),
               ])
@@ -150,17 +150,17 @@
                                 (kind: Text(""), style: (fg: "#81a1c1"))
                             ], align: Left))
                 ),
-                (size: "35%", pane: Pane(Property(content: [
+                (size: "36%", pane: Pane(Property(content: [
                                 (kind: Text("Title "), style: (fg: "#d8dee9")),
                                 (kind: Text(""), style: (fg: "#81a1c1"))
                             ], align: Left))
                 ),
-                (size: "31%", pane: Pane(Property(content: [
+                (size: "30%", pane: Pane(Property(content: [
                                 (kind: Text("Album "), style: (fg: "#d8dee9")),
                                 (kind: Text("󰀥"), style: (fg: "#81a1c1"))
                             ], align: Left))
                 ),
-                (size: "6%", pane: Pane(Property(content: [
+                (size: "7%", pane: Pane(Property(content: [
                                 (kind: Text("Length "), style: (fg: "#d8dee9")),
                                 (kind: Text(" "), style: (fg: "#81a1c1"))
                             ], align: Right))
@@ -192,7 +192,7 @@
                                             (kind: Property(Song(Position)), style: (fg: "#d8dee9")),
                                             (kind: Text(" / "),style: (fg: "#81a1c1", modifiers: "Bold")),
                                             (kind: Property(Status(QueueLength())),style: (fg: "#d8dee9")),
-                                            (kind: Text(" 󰴍 "),style: (fg: "#81a1c1", modifiers: "Bold")),
+                                            (kind: Text(" 󰴍"),style: (fg: "#81a1c1", modifiers: "Bold")),
                                             (kind: Text(" ]"),style: (fg: "#81a1c1", modifiers: "Bold"))
                                         ], align: Left))
                             ),
@@ -258,6 +258,7 @@
                                                 style: (fg: "#d8dee9")),
                                             (kind: Text(" "), style: (fg: "#81a1c1", modifiers: "Bold")),
                                             (kind: Property(Song(FileExtension)), style: (fg: "#4c566a")),
+                                            (kind: Text(" "), style: (fg: "#81a1c1", modifiers: "Bold")),
                                             (kind: Property(Widget(ScanStatus)), style: (fg: "#d8dee9", modifiers: "Bold"))
                                         ], align: Left))
                             ),
@@ -325,4 +326,3 @@
         ),
     },
 )
-
