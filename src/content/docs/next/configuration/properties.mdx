@@ -140,6 +140,14 @@ about parameters and examples. All the examples below assume that the properties
             example: '(kind: Property(Song(Channels()))),'
         },
         {
+            cells: ["`Added()`", "Timestamp when the song was added to the database"],
+            example: '(kind: Property(Song(Added()))),'
+        },
+        {
+            cells: ["`LastModified()`", "Last modified date of the song file"],
+            example: '(kind: Property(Song(LastModified()))),'
+        },
+        {
             cells: ["`Other(value)`", "Display any arbitrary metadata tag supported by MPD"],
             parameters: ["`value`: String, required, name of the tag to display"],
             example: '(kind: Property(Song(Other("albumartist")))),',
