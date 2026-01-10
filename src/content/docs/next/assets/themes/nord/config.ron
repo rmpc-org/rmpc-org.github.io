@@ -7,7 +7,7 @@
 
                     ),
                     (size: "30%", borders: "NONE", border_symbols: Rounded ,pane: Split(direction: Vertical, panes: [
-                                (size: "0.46r", borders: "TOP | RIGHT | LEFT",
+                                (size: "0.47r", borders: "TOP | RIGHT | LEFT",
                                     border_symbols: Rounded,
                                     pane: Pane(AlbumArt)),
                                 (size: "100%", borders: "ALL",

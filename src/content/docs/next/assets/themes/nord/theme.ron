@@ -91,22 +91,22 @@
     ],
     layout: Split(
         direction: Vertical, panes: [
-            (size: "3", borders: "ALL", border_symbols: Library("rounded_collapsed_bottom"),
-                 pane: Split(direction: Vertical, panes: [
+            (size: "2", borders: "TOP | RIGHT | LEFT", border_symbols: Rounded,
+                    pane: Split(direction: Vertical, panes: [
                     (size: "1", borders: "NONE", pane: Split(direction: Horizontal, panes: [
-                    (size: "11%", borders: "NONE", pane: Component("custom_header_left")),
-                    (size: "78%%", borders: "NONE", pane: Pane(Tabs)),
-                    (size: "11%%", borders: "NONE", pane: Component("custom_header_right")),
+                    (size: "12%", borders: "NONE", pane: Component("custom_tab_bar_left")),
+                    (size: "76%", borders: "NONE", pane: Pane(Tabs)),
+                    (size: "12%", borders: "NONE", pane: Component("custom_tab_bar_right")),
                             ])
                     ),
               ])
             ),
-            (size: "3", borders: "RIGHT | BOTTOM | LEFT", border_symbols: Rounded, pane: Component("custom_header")),
+            (size: "4", borders: "ALL", border_symbols: Library("rounded_collapsed_top"), pane: Component("custom_header")),
             (size: "100%", borders: "NONE", pane: Pane(TabContent)),
             (size: "3", borders: "ALL", border_symbols: Rounded ,pane: Split(direction: Vertical, panes: [
                     (size: "1", borders: "NONE", pane: Split(direction: Horizontal, panes: [
                     (size: "100%", borders: "NONE", pane: Pane(ProgressBar)),
-                    (size: "12", borders: "NONE", pane: Component("custom_bar_right")),
+                    (size: "12", borders: "NONE", pane: Component("progress_bar_right")),
                             ])
                     ),
               ])
@@ -171,7 +171,7 @@
                 ),
             ]),
         "custom_header": Split(direction: Horizontal, panes: [
-                (size: "31%", pane: Split(direction: Vertical, panes: [
+                (size: "26%", pane: Split(direction: Vertical, panes: [
                             (size: "100%", pane: Pane(Property(content: [
                                             (kind: Text("[ "),style: (fg: "#81a1c1", modifiers: "Bold")),
                                             (kind: Property(Song(Bits())),default: (kind: Text(" "), style: (fg: "#d8dee9")), style: (fg: "#d8dee9")),
@@ -189,7 +189,8 @@
                                             (kind: Property(Song(SampleRate())),default: (kind: Text(" "), style: (fg: "#d8dee9")), style: (fg: "#d8dee9")),
                                             (kind: Text(" Hz"),style: (fg: "#81a1c1")),
                                             (kind: Text(" | "),style: (fg: "#81a1c1", modifiers: "Bold")),
-                                            (kind: Property(Song(Position)), style: (fg: "#d8dee9")),
+                                            (kind: Property(Song(Position)), style: (fg: "#d8dee9"),
+                                                default: (kind: Text("0"), style: (fg: "#d8dee9"))),
                                             (kind: Text(" / "),style: (fg: "#81a1c1", modifiers: "Bold")),
                                             (kind: Property(Status(QueueLength())),style: (fg: "#d8dee9")),
                                             (kind: Text(" 󰴍"),style: (fg: "#81a1c1", modifiers: "Bold")),
@@ -198,7 +199,7 @@
                             ),
                         ])
                 ),
-                (size: "38%", pane: Split(direction: Vertical, panes: [
+                (size: "48%", pane: Split(direction: Vertical, panes: [
                             (size: "100%", pane: Pane(Property(content: [
                                             (kind: Property(Song(Title)), style: (fg: "#d8dee9",modifiers: "Bold"),
                                                 default: (kind: Property(Song(Filename)), style: (fg: "#d8dee9",modifiers: "Bold")))
@@ -214,7 +215,7 @@
                             ),
                         ])
                 ),
-                (size: "31%", pane: Split(direction: Vertical, panes: [
+                (size: "26%", pane: Split(direction: Vertical, panes: [
                             (size: "100%", pane: Pane(Property(content: [
                                             (kind: Text("[ "),style: (fg: "#81a1c1", modifiers: "Bold")),
                                             (kind: Property(Status(Bitrate)),default: (kind: Text(" "), style: (fg: "#d8dee9")),style: (fg: "#d8dee9")),
@@ -235,7 +236,6 @@
                                             (kind: Property(Status(SingleV2(on_label: "󰎤", off_label: "󰎦", oneshot_label: "󰇊", off_oneshot_label: "󱅊",
                                                             on_style: (fg: "#d8dee9", modifiers: "Bold"),
                                                             off_style: (fg: "#4c566a", modifiers: "Bold"))))),
-                                            (kind: Text(" ]"),style: (fg: "#81a1c1", modifiers: "Bold")),
                                         ], align: Right))
                             ),
                             (size: "100%", pane: Pane(Property(content: [
@@ -244,13 +244,24 @@
                                             (kind: Text(" / "),style: (fg: "#81a1c1", modifiers: "Bold")),
                                             (kind: Property(Status(QueueTimeTotal(separator: " "))),style: (fg: "#d8dee9")),
                                             (kind: Text(" 󱎫"),style: (fg: "#81a1c1", modifiers: "Bold")),
+                                        ], align: Right))
+                            ),
+                        ])
+                ),
+                (size: "2", pane: Split(direction: Vertical, panes: [
+                            (size: "100%", pane: Pane(Property(content: [
+                                            (kind: Text(" ]"),style: (fg: "#81a1c1", modifiers: "Bold")),
+                                        ], align: Right))
+                            ),
+                            (size: "100%", pane: Pane(Property(content: [
                                             (kind: Text(" ]"),style: (fg: "#81a1c1", modifiers: "Bold")),
                                         ], align: Right))
                             ),
                         ])
                 ),
+
             ]),
-        "custom_header_left": Split(direction: Horizontal, panes: [
+        "custom_tab_bar_left": Split(direction: Horizontal, panes: [
                 (size: "100%", pane: Split(direction: Vertical, panes: [
                             (size: "100%", pane: Pane(Property(content: [
                                             (kind: Text(""), style: (fg: "#81a1c1", modifiers: "Bold")),
@@ -259,16 +270,23 @@
                                             (kind: Text(" "), style: (fg: "#81a1c1", modifiers: "Bold")),
                                             (kind: Property(Song(FileExtension)), style: (fg: "#4c566a")),
                                             (kind: Text(" "), style: (fg: "#81a1c1", modifiers: "Bold")),
-                                            (kind: Property(Widget(ScanStatus)), style: (fg: "#d8dee9", modifiers: "Bold"))
+                                            (kind: Property(Widget(ScanStatus)), style: (fg: "#d8dee9", modifiers: "Bold")),
+                                            (kind: Text(" ")),
+                                            (kind: Property(Status(InputBuffer())), style: (fg: "#4c566a")),
                                         ], align: Left))
                             ),
                         ])
                 )
             ]),
-        "custom_header_right": Split(direction: Horizontal, panes: [
+        "custom_tab_bar_right": Split(direction: Horizontal, panes: [
                 (size: "100%", pane: Split(direction: Vertical, panes: [
                             (size: "100%", pane: Pane(Property(content: [
-                                            (kind: Property(Song(Channels())), style: (fg: "#4c566a")),
+                                            (kind: Transform(Replace(content: (kind: Property(Status(Partition)), style: (fg: "#4c566a")), replacements: [
+                                            (match:  "default", replace: (kind: Group([(kind: Text(""))]))),
+                                                ]))),
+                                            (kind: Text(" ")),
+                                            (kind: Property(Song(Channels())), style: (fg: "#4c566a"),
+                                                default: (kind: Text("0"), style: (fg: "#4c566a"))),
                                             (kind: Text(" 󱡫 "),style: (fg: "#4c566a")),
                                             (kind: Text(" 󱡬"), style: (fg: "#81a1c1", modifiers: "Bold")),
                                             (kind: Property(Status(Volume)), style: (fg: "#d8dee9")),
@@ -278,24 +296,16 @@
                         ])
                 ),
             ]),
-        "custom_bar_left": Split(direction: Horizontal, panes: [
+        "progress_bar_right": Split(direction: Horizontal, panes: [
                 (size: "100%", pane: Split(direction: Vertical, panes: [
                             (size: "100%", pane: Pane(Property(content: [
                                             (kind: Property(Status(Elapsed)),style: (fg: "#d8dee9")),
-                                            (kind: Text(" / "),style: (fg: "#81a1c1", modifiers: "Bold")),
-                                            (kind: Property(Status(Duration)),style: (fg: "#d8dee9")),
-                                        ], align: Left))
-                            ),
-                        ])
-                )
-            ]),
-        "custom_bar_right": Split(direction: Horizontal, panes: [
-                (size: "100%", pane: Split(direction: Vertical, panes: [
-                            (size: "100%", pane: Pane(Property(content: [
-                                            (kind: Property(Status(Elapsed)),style: (fg: "#d8dee9")),
-                                            (kind: Text(" / "),style: (fg: "#81a1c1", modifiers: "Bold")),
-                                            (kind: Property(Status(Duration)),style: (fg: "#d8dee9")),
-                                        ], align: Right))
+                                            (kind: Property(Status(StateV2(playing_label: " / ", paused_label: "  ", stopped_label: "  "))),
+                                                style: (fg: "#81a1c1", modifiers: "Bold")),
+                                            (kind: Transform(Replace(content: (kind: Property(Status(Duration)),style: (fg: "#d8dee9")), replacements: [
+                                            (match:  "0:00", replace: (kind: Group([(kind: Text(""),style: (fg: "#81a1c1"))]))),
+                                                    ]))),
+                                        ], align: Center))
                             ),
                         ])
                 ),
@@ -314,11 +324,6 @@
     ),
     lyrics:(timestamp: false),
     border_symbol_sets: {
-    "rounded_collapsed_bottom": (
-        parent: Rounded,
-        bottom_left: "├",
-        bottom_right: "┤",
-        ),
     "rounded_collapsed_top": (
         parent: Rounded,
         top_left: "├",
