@@ -23,8 +23,9 @@ Rmpc has several pane_types which can be displayed. These are:
 | `AlbumArt`                           | The album art. Cannot be focused.                                                                                                                                                                                                                                           |
 | `Cava`                               | Displays a music visualiser using Cava. More info on its own <a href={path("configuration/cava")}>page</a>.                                                                                                                                                                 |
 | `Queue`                              | Table of the current song queue.                                                                                                                                                                                                                                            |
+| `QueueHeader()`                      | Header for the current queue, complimentary to the `Queue` pane                                                                                                                                                                                                             |
 | `Directories`                        | Browse music library by directory.                                                                                                                                                                                                                                          |
-| `Browser`                            | A music library browser. Allows you to specify a root tag and an optional separator. `Browser(root_tag: "<tag>", separator: ";")`. Separator can be used to create multiple entries from one tag value, for example if a song has multiple `genre` values separated by `;`. |
+| `Browser()`                          | A music library browser. Allows you to specify a root tag and an optional separator. `Browser(root_tag: "<tag>", separator: ";")`. Separator can be used to create multiple entries from one tag value, for example if a song has multiple `genre` values separated by `;`. |
 | `Artists`                            | Browse music library by `artist` tag. Equivalent to `Browser(root_tag: "artist")`                                                                                                                                                                                           |
 | `AlbumArtists`                       | Browse music library by `albumartist` tag. Equivalent to `Browser(root_tag: "albumartist")`                                                                                                                                                                                 |
 | `Albums`                             | Browse music library by `album` tag.                                                                                                                                                                                                                                        |
@@ -32,10 +33,9 @@ Rmpc has several pane_types which can be displayed. These are:
 | `Search`                             | Search music library.                                                                                                                                                                                                                                                       |
 | `Lyrics`                             | Display synced lyrics.                                                                                                                                                                                                                                                      |
 | `ProgressBar`                        | Displays the progress of the currently playing song                                                                                                                                                                                                                         |
-| `Header`                             | Displays various information about the current song and MPD's states, configurable in your theme                                                                                                                                                                            |
 | `Tabs`                               | Displays a simple tab bar showing what tabs are available and which one is active                                                                                                                                                                                           |
 | `Property`                           | A special pane which can display a list of <a href={path("configuration/properties")}>properties</a> including styling, default values etc. Check the [Example](#property) for more info.                                                                                   |
-| `Volume`                             | Interactive volume slider with mouse support. Supports `Volume(kind: Slider(<config>))` configuration. More info in the [Example](#volume)                                                                                                                                  |
+| `Volume()`                           | Interactive volume slider with mouse support. Supports `Volume(kind: Slider(<config>))` configuration. More info in the [Example](#volume)                                                                                                                                  |
 
 ### Property
 
@@ -134,18 +134,6 @@ Volume(
 ```
 
 This creates a volume slider with speaker icons at the ends, using green for the filled portion and a white thumb with green background.
-
-### Header
-
-:::note
-Do not use this pane. Use the layout and `Property` panes instead.
-:::
-
-<ConfigValue name="header" type="other" customText="<row[]>" link="#row" />
-Configuration of the header. Header is displayed at the top of the window. It can display info about current song, the
-player state and custom widgets. It is an array of `row` objects. The number of these rows determines how many rows are
-going to be displayed in the header. If left empty, the header is not displayed at all. Each row can have left, center
-and right configuration to display various information about the player state and currently playing song.
 
 #### row
 

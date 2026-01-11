@@ -38,55 +38,78 @@
     ),
     song_table_format: [
         (
-        prop: (kind: Transform(Replace(content: (kind: Sticker("rating")), replacements: [
-            (match:  "0", replace: (kind: Group([(kind: Text("󰎡"),style: (fg: "#81a1c1"))]))),
-            (match:  "1", replace: (kind: Group([(kind: Text("󰎤"),style: (fg: "#81a1c1"))]))),
-            (match:  "2", replace: (kind: Group([(kind: Text("󰎧"),style: (fg: "#81a1c1"))]))),
-            (match:  "3", replace: (kind: Group([(kind: Text("󰎪"),style: (fg: "#81a1c1"))]))),
-            (match:  "4", replace: (kind: Group([(kind: Text("󰎭"),style: (fg: "#81a1c1"))]))),
-            (match:  "5", replace: (kind: Group([(kind: Text("󰎱"),style: (fg: "#81a1c1"))]))),
-            (match:  "6", replace: (kind: Group([(kind: Text("󰎳"),style: (fg: "#81a1c1"))]))),
-            (match:  "7", replace: (kind: Group([(kind: Text("󰎶"),style: (fg: "#81a1c1"))]))),
-            (match:  "8", replace: (kind: Group([(kind: Text("󰎹"),style: (fg: "#81a1c1"))]))),
-            (match:  "9", replace: (kind: Group([(kind: Text("󰎼"),style: (fg: "#81a1c1"))]))),
-            (match: "10", replace: (kind: Group([(kind: Text("󰽽"),style: (fg: "#81a1c1"))]))),
-        ])), default: (kind: Text(""), style: (fg: "#5e81ac"))),
-        width: "2",
-        label: "Rating",
-        alignment: Left,
+            prop: (kind: Transform(Replace(content: (kind: Sticker("rating")), replacements: [
+                (match:  "0", replace: (kind: Group([(kind: Text("󰎡"),style: (fg: "#81a1c1"))]))),
+                (match:  "1", replace: (kind: Group([(kind: Text("󰎤"),style: (fg: "#81a1c1"))]))),
+                (match:  "2", replace: (kind: Group([(kind: Text("󰎧"),style: (fg: "#81a1c1"))]))),
+                (match:  "3", replace: (kind: Group([(kind: Text("󰎪"),style: (fg: "#81a1c1"))]))),
+                (match:  "4", replace: (kind: Group([(kind: Text("󰎭"),style: (fg: "#81a1c1"))]))),
+                (match:  "5", replace: (kind: Group([(kind: Text("󰎱"),style: (fg: "#81a1c1"))]))),
+                (match:  "6", replace: (kind: Group([(kind: Text("󰎳"),style: (fg: "#81a1c1"))]))),
+                (match:  "7", replace: (kind: Group([(kind: Text("󰎶"),style: (fg: "#81a1c1"))]))),
+                (match:  "8", replace: (kind: Group([(kind: Text("󰎹"),style: (fg: "#81a1c1"))]))),
+                (match:  "9", replace: (kind: Group([(kind: Text("󰎼"),style: (fg: "#81a1c1"))]))),
+                (match: "10", replace: (kind: Group([(kind: Text("󰽽"),style: (fg: "#81a1c1"))]))),
+            ])), default: (kind: Text(""), style: (fg: "#5e81ac"))),
+            width: "2",
+            alignment: Left,
+            label_prop: (kind: Group([
+                (kind: Text("󰩳"), style: (fg: "#81a1c1")),
+            ]))
         ),
         (
             prop: (kind: Sticker("playCount"),style: (fg: "#81a1c1"),
                  default: (kind: Text(""), style: (fg: "#5e81ac"))),
             width: "3",
             alignment: Left,
-            label: "Playcount"
+            label_prop: (kind: Group([
+                (kind: Text("󰆙"), style: (fg: "#81a1c1")),
+            ]))
         ),
         (
             prop:(kind: Text("│"), style: (fg: "#81a1c1")),
             width: "1",
             alignment: Center,
-            label: ""
+            label: "",
+            label_prop: (kind: Group([
+                (kind: Text("│"), style: (fg: "#81a1c1")),
+            ]))
         ),
         (
             prop: (kind: Property(Artist), style: (fg: "#81a1c1"),
                 default: (kind: Text("Unknown Artist"), style: (fg: "#b48ead"))),
-            width: "21%"
+            width: "21%",
+            label_prop: (kind: Group([
+                (kind: Text("Artist "), style: (fg: "#d8dee9")),
+                (kind: Text(""), style: (fg: "#81a1c1"))
+            ]))
         ),
         (
             prop: (kind: Property(Title), style: (fg: "#88c0d0"),
                 default: (kind: Property(Filename), style: (fg: "#d8dee9"))),
-            width: "36%"
+            width: "36%",
+            label_prop: (kind: Group([
+                (kind: Text("Title "), style: (fg: "#d8dee9")),
+                (kind: Text(""), style: (fg: "#81a1c1"))
+            ]))
         ),
         (
             prop: (kind: Property(Album), style: (fg: "#81a1c1"),
                 default: (kind: Text("Unknown Album"), style: (fg: "#b48ead"))),
-            width: "31%"
+            width: "31%",
+            label_prop: (kind: Group([
+                (kind: Text("Album "), style: (fg: "#d8dee9")),
+                (kind: Text("󰀥"), style: (fg: "#81a1c1"))
+            ]))
         ),
         (
             prop: (kind: Property(Duration), style: (fg: "#88c0d0"),
                 default: (kind: Text("-"))),
-            width: "5%", alignment: Right
+            width: "9", alignment: Right,
+            label_prop: (kind: Group([
+                (kind: Text("Length "), style: (fg: "#d8dee9")),
+                (kind: Text(" "), style: (fg: "#81a1c1"))
+            ]))
         ),
     ],
     layout: Split(
@@ -132,44 +155,6 @@
         trace: (fg: "#b48ead", bg: "#2e3440"),
     ),
     components: {
-        "custom_song_table_header": Split(borders: "NONE", direction: Horizontal, panes: [
-                (size: "2", pane: Pane(Property(content: [
-                                (kind: Text(" 󰩳"), style: (fg: "#81a1c1")),
-                            ], align: Left))
-                ),
-                (size: "4", pane: Pane(Property(content: [
-                                (kind: Text("  󰆙"), style: (fg: "#81a1c1")),
-                            ], align: Left))
-                ),
-                (size: "4", pane: Pane(Property(content: [
-                                (kind: Text("  │"), style: (fg: "#81a1c1")),
-                            ], align: Left))
-                ),
-                (size: "21%", pane: Pane(Property(content: [
-                                (kind: Text("Artist "), style: (fg: "#d8dee9")),
-                                (kind: Text(""), style: (fg: "#81a1c1"))
-                            ], align: Left))
-                ),
-                (size: "36%", pane: Pane(Property(content: [
-                                (kind: Text("Title "), style: (fg: "#d8dee9")),
-                                (kind: Text(""), style: (fg: "#81a1c1"))
-                            ], align: Left))
-                ),
-                (size: "30%", pane: Pane(Property(content: [
-                                (kind: Text("Album "), style: (fg: "#d8dee9")),
-                                (kind: Text("󰀥"), style: (fg: "#81a1c1"))
-                            ], align: Left))
-                ),
-                (size: "7%", pane: Pane(Property(content: [
-                                (kind: Text("Length "), style: (fg: "#d8dee9")),
-                                (kind: Text(" "), style: (fg: "#81a1c1"))
-                            ], align: Right))
-                ),
-                (size: "1", pane: Pane(Property(content: [
-                                (kind: Text(" "), style: (fg: "#81a1c1")),
-                            ], align: Left))
-                ),
-            ]),
         "custom_header": Split(direction: Horizontal, panes: [
                 (size: "26%", pane: Split(direction: Vertical, panes: [
                             (size: "100%", pane: Pane(Property(content: [
