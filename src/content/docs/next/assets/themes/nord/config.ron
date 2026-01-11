@@ -1,8 +1,9 @@
     tabs: [
         (name: "Home", pane: Split(direction: Horizontal, panes: [
                     (size: "70%", borders: "NONE", pane: Split(direction: Vertical, panes: [
-                    (size: "3", borders: "ALL", border_symbols: Rounded ,pane: Component("custom_song_table_header")),
-                                (size: "100%", borders: "ALL", border_symbols: Rounded ,pane: Pane(Queue)),
+
+                    (size: "3", borders: "ALL", border_symbols: Rounded, pane: Pane(QueueHeader())),
+                                (size: "100%", borders: "ALL", border_symbols: Rounded, pane: Pane(Queue)),
                         ])
 
                     ),
