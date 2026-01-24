@@ -1,9 +1,8 @@
     tabs: [
         (name: "Home", pane: Split(direction: Horizontal, panes: [
                     (size: "70%", borders: "NONE", pane: Split(direction: Vertical, panes: [
-
-                    (size: "3", borders: "ALL", border_symbols: Rounded, pane: Pane(QueueHeader())),
-                                (size: "100%", borders: "ALL", border_symbols: Rounded, pane: Pane(Queue)),
+                                (size: "3", borders: "ALL", border_symbols: Rounded , pane: Pane(QueueHeader())),
+                                (size: "100%", borders: "ALL", border_symbols: Rounded ,pane: Pane(Queue)),
                         ])
 
                     ),
@@ -46,19 +45,26 @@
                     (size: "100%", borders: "ALL", border_symbols: Rounded, pane: Pane(Browser(root_tag: "genre", separator: ";"))),
                 ])
         ),
-        (name: "Queue", pane: Split(direction: Horizontal, panes: [
-                    (size: "100%", borders: "ALL", border_symbols: Rounded, pane: Pane(Queue))
-                ])
+        (name: "Queue", pane: Split(direction: Vertical, panes: [
+                    (size: "2", borders: "TOP | RIGHT | LEFT", border_symbols: Rounded , pane: Pane(QueueHeader())),
+                    (size: "100%", borders: "ALL", border_symbols: Library("rounded_collapsed_top"),
+                                    border_title: [(kind: Property(Song(File)), style: (fg: "#4c566a"))],
+                                    border_title_position: Bottom,
+                                    border_title_alignment: Right,
+                                    pane: Pane(Queue)),
+                        ])
+
         ),
         (name: "Show",pane: Split(direction: Vertical, panes: [
                     (size: "50%", pane: Split(direction: Horizontal, panes: [
                                 (size: "39%", borders: "ALL", border_symbols: Rounded, pane: Pane(Queue)),
                                 (size: "22%", borders: "ALL", border_symbols: Rounded, pane: Pane(AlbumArt)),
                                 (size: "39%", borders: "ALL",
-                                    border_title: [(kind: Text("Lyrics"), style: (fg: "#81a1c1"))],
-                                    border_title_position: Top,
-                                    border_title_alignment: Right,
-                                    border_symbols: Rounded, pane: Pane(Lyrics)),
+                                     border_title: [(kind: Text("Lyrics"), style: (fg: "#81a1c1"))],
+                                     border_title_position: Top,
+                                     border_title_alignment: Right,
+                                     border_symbols: Rounded,
+                                    pane: Pane(Lyrics)),
                             ])
                     ),
                     (size: "50%", borders: "ALL", border_symbols: Rounded, pane: Pane(Cava)),
