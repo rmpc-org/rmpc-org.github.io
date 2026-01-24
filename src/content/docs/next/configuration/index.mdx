@@ -145,6 +145,9 @@ Available tokens:
 
 Defaults to `"%m:%S"` (e.g., "5:43" for 5 minutes 43 seconds).
 
+:::caution
+Invalid format tokens (e.g., `%z`) or a trailing `%` will cause a config error. Only the tokens listed above are valid.
+:::
 #### Examples
 ```rust
 duration_format: "%m:%S",        // "5:43"
