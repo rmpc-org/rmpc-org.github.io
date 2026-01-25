@@ -129,6 +129,36 @@ Defaults to `true`.
 Whether to automatically open the downloads modal when starting a new ytdlp download.
 Defaults to `true`.
 
+### duration_format
+
+<ConfigValue name="duration_format" type="string" optional />
+
+Template string for formatting song durations throughout the application. Uses `%` tokens for time components.
+
+Available tokens:
+
+- `%d` / `%D` - Days (unpadded / zero-padded to 2 digits)
+- `%h` / `%H` - Hours (unpadded / zero-padded to 2 digits)
+- `%m` / `%M` - Minutes (unpadded / zero-padded to 2 digits)
+- `%s` / `%S` - Seconds (unpadded / zero-padded to 2 digits)
+- `%t` - Total seconds
+- `%%` - Literal `%` character
+
+Defaults to `"%m:%S"` (e.g., "5:43" for 5 minutes 43 seconds).
+
+:::caution
+Invalid format tokens (e.g., `%z`) or a trailing `%` will cause a config error. Only the tokens listed above are valid.
+:::
+
+#### Examples
+
+```rust
+duration_format: "%m:%S",        // "5:43"
+duration_format: "%M:%S",        // "05:43" (zero-padded minutes)
+duration_format: "%h:%M:%S",     // "1:05:43" (with hours)
+duration_format: "%t seconds",   // "343 seconds"
+```
+
 ### theme
 
 <ConfigValue optional name="theme" type="string" />
