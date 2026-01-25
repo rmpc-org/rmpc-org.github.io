@@ -136,6 +136,7 @@ Defaults to `true`.
 Template string for formatting song durations throughout the application. Uses `%` tokens for time components.
 
 Available tokens:
+
 - `%d` / `%D` - Days (unpadded / zero-padded to 2 digits)
 - `%h` / `%H` - Hours (unpadded / zero-padded to 2 digits)
 - `%m` / `%M` - Minutes (unpadded / zero-padded to 2 digits)
@@ -148,17 +149,15 @@ Defaults to `"%m:%S"` (e.g., "5:43" for 5 minutes 43 seconds).
 :::caution
 Invalid format tokens (e.g., `%z`) or a trailing `%` will cause a config error. Only the tokens listed above are valid.
 :::
+
 #### Examples
+
 ```rust
 duration_format: "%m:%S",        // "5:43"
 duration_format: "%M:%S",        // "05:43" (zero-padded minutes)
 duration_format: "%h:%M:%S",     // "1:05:43" (with hours)
 duration_format: "%t seconds",   // "343 seconds"
 ```
-
-:::note
-Some properties like `QueueTimeTotal` and `QueueTimeRemaining` can override the format when a separator is specified in the property definition.
-:::
 
 ### theme
 
