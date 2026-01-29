@@ -38,10 +38,13 @@ Portion of the table width reserved for this column. Can be one of:
 <ConfigValue name="alignment" type={["Left", "Right", "Center"]} />
 Percentage of the table reserved for this column. Sum of these value must be 100.
 
-### label
+### label_prop and label
 
+<ConfigValue name="label_prop" type="other" customText="<property>" link="../properties" />
 <ConfigValue name="label" type="string" />
-Optional label for the column. Displayed in the table header. Name of the property is used if not provided.
+Optional label for the column. Displayed in the `QueueHeader()` pane. Only the `Text` and `Group`
+property kinds are allowed here. `label` is a simple shorthand for `(kind: Text("<value>"))`.
+Defaults to the name of the property if not provided.
 
 ## Example
 
