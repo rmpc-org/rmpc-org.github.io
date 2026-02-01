@@ -20,6 +20,15 @@ export default defineConfig({
                     removeCommentsWhenCopyingTerminalFrames: false,
                 },
             },
+            head: [
+                {
+                    tag: "meta",
+                    attrs: {
+                        property: "og:image",
+                        content: "https://github.com/mierak/rmpc/raw/master/assets/preview.png",
+                    },
+                },
+            ],
             plugins: [
                 starlightLinksValidator({
                     exclude: [
