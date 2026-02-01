@@ -78,6 +78,50 @@ export default defineConfig({
                         ],
                     },
                     {
+                        label: "Release (v0.11.0)",
+                        link: "release-0-11-0/overview",
+                        icon: "seti:git",
+                        badge: { text: "Stable", variant: "default" },
+                        items: [
+                            {
+                                label: "Overview",
+                                link: "release-0-11-0/overview",
+                            },
+                            {
+                                label: "Installation",
+                                link: "release-0-11-0/installation",
+                            },
+                            {
+                                label: "Try without installing",
+                                link: "release-0-11-0/try-without-install",
+                            },
+                            {
+                                label: "Configuration",
+                                autogenerate: {
+                                    directory: "release-0-11-0/configuration",
+                                },
+                            },
+                            {
+                                label: "Guides",
+                                autogenerate: {
+                                    directory: "release-0-11-0/guides",
+                                },
+                            },
+                            {
+                                label: "Reference",
+                                autogenerate: {
+                                    directory: "release-0-11-0/reference",
+                                },
+                            },
+                            {
+                                label: "Theme gallery",
+                                autogenerate: {
+                                    directory: "release-0-11-0/themes",
+                                },
+                            },
+                        ],
+                    },
+                    {
                         label: "Release (v0.10.0)",
                         link: "release-0-10-0/overview",
                         icon: "seti:git",
