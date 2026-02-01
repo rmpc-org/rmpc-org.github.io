@@ -129,6 +129,25 @@ Defaults to `true`.
 Whether to automatically open the downloads modal when starting a new ytdlp download.
 Defaults to `true`.
 
+### extra_yt_dlp_args
+
+<ConfigValue name="extra_yt_dlp_args" type="string[]" />
+
+Additional arguments that will be passed to yt-dlp when downloading. Useful to pass in for example
+`["--cookies-from-browser=firefox"]`.
+
+Rmpc executes the following:
+
+```bash frame=none showLineNumbers=false
+yt-dlp -x --embed-thumbnail --embed-metadata -f bestaudio --convert-thumbnails jpg {} --output <path> <url>
+```
+
+The `extra_yt_dlp_args`, if any, will be passed instead of the {} in the command.
+
+:::caution
+Only use this if you are really sure you know what you are doing!
+:::
+
 ### duration_format
 
 <ConfigValue name="duration_format" type="string" optional />
