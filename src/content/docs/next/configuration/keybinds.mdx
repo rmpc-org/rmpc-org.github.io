@@ -64,6 +64,19 @@ To map a sequence of keys simple list them after each other, for example `<C-a>r
 Can be used to bind any script/shell command to a key. This command gets info about MPD's and rmpc's state as environment variables.
 All song paths are listed as their path relative to MPD's music directory.
 
+#### Arguments
+
+An input modal will appear if your command contains `{}` anywhere. There can be one or more of these
+placeholders. These placeholders will then be replaced with arguments provided via the input modal.
+The number of arguments must exactly match the number of `{}` in your command.
+
+The arguments are split similarly to how a shell would, meaning whitespace signifies a new argument.
+If you need to include whitespace in the argument you can quote it or escape the whitespace symbol
+with `\`. Example: `one two "three\" three" four\ four` will result in four arguments: `one`, `two`,
+`three" three` and `four four`.
+
+Literal `{` and `}` must be escaped by doubling them: `{{` and `}}`.
+
 #### Environment
 
 - `$CURRENT_SONG`: can be used to access the currently playing song.
