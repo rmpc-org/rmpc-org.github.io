@@ -74,6 +74,35 @@ Add [`rmpc`](https://search.nixos.org/packages?channel=unstable&query=rmpc) (ava
 }
 ```
 
+Alternatively, you can install the latest work in progress version from git using the flake:
+
+1. Add the flake to your flake inputs:
+```nix title="flake.nix"
+{
+  inputs = {
+    # -- snip --
+    rmpc = {
+      url = "github:mierak/rmpc";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
+  # -- snip --
+}
+```
+
+2. Add the package to your system configuration:
+```nix title="configuration.nix"
+{ pkgs, rmpc, ... }:
+
+{
+  environment.systemPackages = with pkgs; [
+    rmpc.packages.${pkgs.stdenv.hostPlatform.system}.default;
+  ];
+}
+```
+
+3. Rebuild your system
+
 ### Precompiled binaries
 
 Download the precompiled binaries from the github [releases page](https://github.com/mierak/rmpc/releases/latest/).
