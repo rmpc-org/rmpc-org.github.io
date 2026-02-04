@@ -46,6 +46,14 @@ Optional label for the column. Displayed in the `QueueHeader()` pane. Only the `
 property kinds are allowed here. `label` is a simple shorthand for `(kind: Text("<value>"))`.
 Defaults to the name of the property if not provided.
 
+### scroll_speed
+
+<ConfigValue name="scroll_speed" type="number" />
+
+The column will loop around instead of being ellipsized when the content cannot fit into the width.
+The speed is in columns per second. Note that the scroll position is bound to the elapsed time of the
+currently playing song and will not scroll if nothing is playing.
+
 ## Example
 
 This configuration displays a table with a single column.
