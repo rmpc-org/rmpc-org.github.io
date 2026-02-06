@@ -93,6 +93,54 @@ Where to align album art horizontally. Not supported by ueberzugpp backend.
 
 The default album art image can also be changed <a href={path("configuration/theme#default_album_art_path")}>in your theme</a>.
 
+### custom_loader
+
+<ConfigValue name="custom_loader" type="string[]" />
+
+A custom script/program to use to load album art image from instead of using the inbuilt functionality.
+The script must uphold several invariants, failure to do so will result in errors and undefined behavior.
+Supported formats are jpg, png and webp.
+
+Example: `custom_loader: ["~/.config/rmpc/scripts/custom_art_loader"]`
+
+#### Protocol
+
+The script must always exit with code 0. The output must be printed to stdout. The current song's file
+path is available as the environment variable `$FILE`. There are three possible actions to take and
+each of them must print the following exactly.
+
+- Display a successfully loaded custom image
+    - `size: <bytes>` followed by a newline where `<bytes>` is the image's size in bytes
+    - `action: display` followed by a newline and the raw image bytes
+- Fallback to rmpc default behavior
+    - `action: fallback` followed by a newline
+- Display the default_album_art
+    - `action: displaydefault` followed by a newline
+
+Example script that always displays `my_custom_cover.jpg` in the songs's directory and the default
+album art if not found:
+
+```bash frame=none showLineNumbers=false
+#!/usr/bin/env bash
+
+# This script is only for illustrative purposes only. You should also check if the $FILE is really
+# relative to your music_dir or comes from a mount/absolute file path etc.
+
+music_dir="$HOME/Music"
+path="$music_dir/$FILE"
+parent_dir=$(dirname "$path")
+cover_path="$parent_dir/my_custom_cover.jpg"
+
+if [ -f "$cover_path" ]; then
+    size=$(stat -c%s "$cover_path")
+    echo "size: $size" # tell rmpc to read this many bytes
+    echo "action: display" # instruct rmpc that a custom image should be displayed
+    cat "$cover_path" # print the raw bytes to stdout
+else
+    echo "action: fallback" # tell rmpc to fall back to ask MPD for image as usual
+fi
+```
+
 ## Backends
 
 ### Kitty
