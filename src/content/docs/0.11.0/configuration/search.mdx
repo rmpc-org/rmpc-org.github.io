@@ -1,0 +1,76 @@
+---
+title: Search pane
+description: Configuring rmpc's search pane
+sidebar:
+  order: 80
+slug: 0.11.0/configuration/search
+---
+
+import ConfigValue from "../../../../components/ConfigValue.tsx";
+
+## case\_sensitive
+
+<ConfigValue name="case_sensitive" type="bool" />
+
+Whether the filter should be case sensitive by default. Default is `false`.
+
+:::note
+Cannot be enabled at the same time as [ignore\_diacritics](#ignore_diacritics).
+:::
+
+## ignore\_diacritics
+
+<ConfigValue name="ignore_diacritics" type="bool" />
+
+Whether the filter should ignore diacritics by default. Default is `false`.
+
+:::note
+Cannot be enabled at the same time as [case\_sensitive](#case_sensitive).
+:::
+
+:::note
+This option requires MPD version 0.25.0 or newer to work
+:::
+
+## search\_button
+
+<ConfigValue name="search_button" type="bool" />
+
+Display a dedicated search button in the search from when set to true. Otherwise the search is triggered
+on every change. Defaults to `false`.
+
+## custom\_query
+
+<ConfigValue name="custom_query" type="bool" />
+
+Displays an input allowing you to input a fully custom query as specified by [MPD's protocol](https://mpd.readthedocs.io/en/latest/protocol.html#filters).
+All tag filters will be ignored if this query is specified. Only settings that work with this are
+case sensitivity, diacritics stripping and the rating filters.
+Defaults to `false`.
+
+Examples:
+
+* `artist == "Epica"`
+* `(artist == "Epica") AND (album == "The Phantom Agony")`
+
+:::caution
+Do not use this unless you are *really* sure you know what you are doing. This will result in errors if you
+input a malformed query. You are on your own, do not report issues about this unless it is really broken.
+:::
+
+## mode
+
+<ConfigValue name="mode" type={["Exact", "NotExact", "StartsWith", "Contains", "Regex", "NotRegex"]} />
+
+What kind if filter to use by default. `NotExact` and `NotRegex` are negation of `Exact` and `Regex`
+respectively. Default is `Contains`.
+
+## tags
+
+<ConfigValue name="tags" customText="<(label: <string>, value: <string>)[]>" />
+
+Array of tags to list as searchable on the Search pane. Each tag consists of a label and value.
+If not specified, the [default values](/0.11.0/reference/config) are used. If empty array is passed,
+a value of `[(label: "Any Tag", value: "any")]` will be used instead. For a list of supported tags
+refer to [MPD's documentation](https://mpd.readthedocs.io/en/latest/protocol.html#tags). Special
+tag `any` will check all possible tags.

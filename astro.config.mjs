@@ -1,7 +1,7 @@
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
 import starlightLinksValidator from "starlight-links-validator";
-import starlightSidebarTopics from "starlight-sidebar-topics";
+import starlightVersions from "starlight-versions";
 
 import react from "@astrojs/react";
 
@@ -36,189 +36,64 @@ export default defineConfig({
                         "http://localhost:4321", // a link to the local server in dev & contributing
                     ],
                 }),
-                starlightSidebarTopics([
-                    {
-                        id: "next",
-                        label: "Latest git",
-                        link: "next/overview",
-                        icon: "seti:git",
-                        badge: { text: "Dev", variant: "caution" },
-                        items: [
-                            {
-                                label: "Overview",
-                                link: "next/overview",
-                            },
-                            {
-                                label: "Installation",
-                                link: "next/installation",
-                            },
-                            {
-                                label: "Try without installing",
-                                link: "next/try-without-install",
-                            },
-                            {
-                                label: "Development and contributing",
-                                link: "development",
-                            },
-                            {
-                                label: "Configuration",
-                                autogenerate: {
-                                    directory: "next/configuration",
-                                },
-                            },
-                            {
-                                label: "Guides",
-                                autogenerate: {
-                                    directory: "next/guides",
-                                },
-                            },
-                            {
-                                label: "Reference",
-                                autogenerate: {
-                                    directory: "next/reference",
-                                },
-                            },
-                            {
-                                label: "Theme gallery",
-                                autogenerate: {
-                                    directory: "next/themes",
-                                },
-                            },
-                        ],
+                starlightVersions({
+                    versions: [
+                        {
+                            slug: "0.11.0",
+                            label: "v0.11.0",
+                        },
+                        {
+                            slug: "0.10.0",
+                            label: "v0.10.0",
+                        },
+                        {
+                            slug: "0.9.0",
+                            label: "v0.9.0",
+                        },
+                    ],
+                }),
+            ],
+            sidebar: [
+                {
+                    label: "Overview",
+                    slug: "overview",
+                },
+                {
+                    label: "Installation",
+                    slug: "installation",
+                },
+                {
+                    label: "Try without installing",
+                    slug: "try-without-install",
+                },
+                {
+                    label: "Development and contributing",
+                    link: "development",
+                },
+                {
+                    label: "Configuration",
+                    autogenerate: {
+                        directory: "configuration",
                     },
-                    {
-                        label: "Release (v0.11.0)",
-                        link: "release-0-11-0/overview",
-                        icon: "seti:git",
-                        badge: { text: "Stable", variant: "default" },
-                        items: [
-                            {
-                                label: "Overview",
-                                link: "release-0-11-0/overview",
-                            },
-                            {
-                                label: "Installation",
-                                link: "release-0-11-0/installation",
-                            },
-                            {
-                                label: "Try without installing",
-                                link: "release-0-11-0/try-without-install",
-                            },
-                            {
-                                label: "Configuration",
-                                autogenerate: {
-                                    directory: "release-0-11-0/configuration",
-                                },
-                            },
-                            {
-                                label: "Guides",
-                                autogenerate: {
-                                    directory: "release-0-11-0/guides",
-                                },
-                            },
-                            {
-                                label: "Reference",
-                                autogenerate: {
-                                    directory: "release-0-11-0/reference",
-                                },
-                            },
-                            {
-                                label: "Theme gallery",
-                                autogenerate: {
-                                    directory: "release-0-11-0/themes",
-                                },
-                            },
-                        ],
+                },
+                {
+                    label: "Guides",
+                    autogenerate: {
+                        directory: "guides",
                     },
-                    {
-                        label: "Release (v0.10.0)",
-                        link: "release-0-10-0/overview",
-                        icon: "seti:git",
-                        badge: { text: "Stable", variant: "default" },
-                        items: [
-                            {
-                                label: "Overview",
-                                link: "release-0-10-0/overview",
-                            },
-                            {
-                                label: "Installation",
-                                link: "release-0-10-0/installation",
-                            },
-                            {
-                                label: "Try without installing",
-                                link: "release-0-10-0/try-without-install",
-                            },
-                            {
-                                label: "Configuration",
-                                autogenerate: {
-                                    directory: "release-0-10-0/configuration",
-                                },
-                            },
-                            {
-                                label: "Guides",
-                                autogenerate: {
-                                    directory: "release-0-10-0/guides",
-                                },
-                            },
-                            {
-                                label: "Reference",
-                                autogenerate: {
-                                    directory: "release-0-10-0/reference",
-                                },
-                            },
-                            {
-                                label: "Theme gallery",
-                                autogenerate: {
-                                    directory: "release-0-10-0/themes",
-                                },
-                            },
-                        ],
+                },
+                {
+                    label: "Reference",
+                    autogenerate: {
+                        directory: "reference",
                     },
-                    {
-                        label: "Release (v0.9.0)",
-                        link: "release-0-9-0/overview",
-                        icon: "seti:todo",
-                        badge: { text: "Stable", variant: "default" },
-                        items: [
-                            {
-                                label: "Overview",
-                                link: "release-0-9-0/overview",
-                            },
-                            {
-                                label: "Installation",
-                                link: "release-0-9-0/installation",
-                            },
-                            {
-                                label: "Try without installing",
-                                link: "release-0-9-0/try-without-install",
-                            },
-                            {
-                                label: "Configuration",
-                                autogenerate: {
-                                    directory: "release-0-9-0/configuration",
-                                },
-                            },
-                            {
-                                label: "Guides",
-                                autogenerate: {
-                                    directory: "release-0-9-0/guides",
-                                },
-                            },
-                            {
-                                label: "Reference",
-                                autogenerate: {
-                                    directory: "release-0-9-0/reference",
-                                },
-                            },
-                            {
-                                label: "Theme gallery",
-                                autogenerate: {
-                                    directory: "release-0-9-0/themes",
-                                },
-                            },
-                        ],
+                },
+                {
+                    label: "Theme gallery",
+                    autogenerate: {
+                        directory: "themes",
                     },
-                ]),
+                },
             ],
             editLink: {
                 baseUrl: "https://github.com/rmpc-org/docs/edit/master/",
@@ -240,7 +115,6 @@ export default defineConfig({
                 Hero: "./src/components/Hero.astro",
                 Header: "./src/components/Header.astro",
                 Banner: "./src/components/Banner.astro",
-                Search: "./src/components/Search.astro",
                 ContentPanel: "./src/components/ContentPanel.astro",
             },
         }),

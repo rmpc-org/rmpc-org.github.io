@@ -1,0 +1,40 @@
+{
+  "sidebar": [
+    {
+      "label": "Overview",
+      "slug": "overview"
+    },
+    {
+      "label": "Installation",
+      "slug": "installation"
+    },
+    {
+      "label": "Try without installing",
+      "slug": "try-without-install"
+    },
+    {
+      "label": "Configuration",
+      "autogenerate": {
+        "directory": "configuration"
+      }
+    },
+    {
+      "label": "Guides",
+      "autogenerate": {
+        "directory": "guides"
+      }
+    },
+    {
+      "label": "Reference",
+      "autogenerate": {
+        "directory": "reference"
+      }
+    },
+    {
+      "label": "Theme gallery",
+      "autogenerate": {
+        "directory": "themes"
+      }
+    }
+  ]
+}

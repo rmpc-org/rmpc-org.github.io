@@ -1,0 +1,27 @@
+---
+title: Catppuccin Macchiato
+description: An attempt at recreating Catpuccin theme
+sidebar:
+  order: 1
+slug: 0.9.0/themes/catppuccin
+---
+
+import { Image } from "astro:assets";
+import { Code } from "@astrojs/starlight/components";
+import img from "../../../../assets/themes/catppuccin-macchiato/0.9.0/queue.png";
+import theme from "../../../../assets/themes/catppuccin-macchiato/0.9.0/theme.ron?raw";
+import config from "../../../../assets/themes/catppuccin-macchiato/0.9.0/config.ron?raw";
+
+Attempt at creating Catppuccin Macchiato theme.
+
+## Preview
+
+<Image src={img} width={800} alt="" />
+
+## Config
+
+<Code code={theme} lang="rust" title="theme.ron" />
+
+You also need to put the following tabs config into your `config.ron` to get the album art on the right.
+
+<Code code={config} lang="rust" title="config.ron" />

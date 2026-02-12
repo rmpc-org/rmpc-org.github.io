@@ -24,7 +24,7 @@
         "react-dom": "^19.1.0",
         "sharp": "^0.34.5",
         "starlight-links-validator": "^0.17.0",
-        "starlight-sidebar-topics": "^0.6.0",
+        "starlight-versions": "github:mierak/starlight-versions#cff507f2ed5fe492ede951e3d3e6009562313c70",
         "typescript": "^5.8.3"
     },
     "devDependencies": {
