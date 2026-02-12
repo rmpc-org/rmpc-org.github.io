@@ -3,7 +3,11 @@ import { Icon } from "@astrojs/starlight/components";
 
 const url = Astro.url;
 const isGitVersion = !url.pathname.match(/\/\d+\.\d+\.\d+/);
-const shouldShowBanner = isGitVersion && !url.pathname.includes("try-without-install") && !url.pathname.includes("faq");
+const shouldShowBanner =
+    isGitVersion &&
+    !url.pathname.includes("try-without-install") &&
+    !url.pathname.includes("faq") &&
+    url.pathname !== "/";
 ---
 
 <div class="sl-banner">
