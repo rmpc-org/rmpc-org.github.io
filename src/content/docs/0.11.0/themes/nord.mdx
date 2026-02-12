@@ -1,0 +1,34 @@
+---
+title: Nord
+description: Nord theme with default colors
+sidebar:
+  order: 1
+slug: 0.11.0/themes/nord
+---
+
+import { Image } from "astro:assets";
+import { Code } from "@astrojs/starlight/components";
+import img1 from "../../../../assets/themes/nord/0.11.0/nord.png";
+import img2 from "../../../../assets/themes/nord/0.11.0/nord2.png";
+import theme1 from "../../../../assets/themes/nord/0.11.0/theme.ron?raw";
+import theme2 from "../../../../assets/themes/nord/0.11.0/config.ron?raw";
+
+You must add the tab section to your `config.ron`.\
+Requires a Nerd Font for some of the symbols.\
+You probably also want to enable the sticker file and add the playcount script to run on song change, aswell as enable Cava.
+
+Depending on your font and screen you might need to slightly adjust some values in:
+
+* "AlbumArt" in the config.ron
+
+## Preview
+
+<Image src={img1} width={1000} alt="" />
+
+<Image src={img2} width={1000} alt="" />
+
+## Config
+
+<Code code={theme1} lang="rust" title="theme.ron" />
+
+<Code code={theme2} lang="rust" title="config.ron" />

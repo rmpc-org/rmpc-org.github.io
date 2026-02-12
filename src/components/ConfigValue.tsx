@@ -4,11 +4,15 @@ type Props = {
     customText?: string;
     optional?: boolean;
     default?: string;
+    href?: string;
     link?: string;
 };
 
 export default function ConfigValue(props: Props) {
-    const { name, type, customText, optional, link } = props;
+    if (props.link) {
+        throw new Error("The 'link' prop is deprecated. Please use 'href' instead.");
+    }
+    const { name, type, customText, optional, href } = props;
     let value;
     let clazz;
     if (type === "string") {
@@ -28,8 +32,8 @@ export default function ConfigValue(props: Props) {
         clazz = "other";
     }
 
-    const valuediv = link ? (
-        <a href={link}>
+    const valuediv = href ? (
+        <a href={href}>
             <span className={clazz}>{value}</span>
         </a>
     ) : (

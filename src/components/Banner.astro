@@ -2,7 +2,7 @@
 import { Icon } from "@astrojs/starlight/components";
 
 const url = Astro.url;
-const isGitVersion = url.pathname.startsWith("/next");
+const isGitVersion = !url.pathname.match(/\/\d+\.\d+\.\d+/);
 const shouldShowBanner = isGitVersion && !url.pathname.includes("try-without-install") && !url.pathname.includes("faq");
 ---
 

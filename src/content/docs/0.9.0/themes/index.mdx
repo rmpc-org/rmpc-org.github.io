@@ -1,0 +1,20 @@
+---
+title: Default
+description: A default theme reference
+sidebar:
+  order: 0
+slug: 0.9.0/themes
+---
+
+import { Image } from "astro:assets";
+import { Code } from "@astrojs/starlight/components";
+import theme from "../../../../assets/themes/default/0.9.0/theme.ron?raw";
+import img from "../../../../assets/themes/default/0.9.0/preview.png";
+
+## Preview
+
+<Image src={img} width={800} alt="" />
+
+## Config
+
+<Code code={theme} lang="rust" title="theme.ron" />
