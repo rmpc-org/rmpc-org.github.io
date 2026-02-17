@@ -182,6 +182,7 @@ list and controlling search mode.
 |                                   `<C-s>s`                                    | [Save(..)](#save)                           | Save selected item(s) to a playlist with specified options. More info [in its section](#save)                                      |
 |                                   `<C-s>a`                                    | [Save(..)](#save)                           | Save all item in the directory/queue to a playlist with specified options. More info [in its section](#save)                       |
 |                                      `r`                                      | [Rate()](#rate)                             | Set song rating, must have [stickers](/configuration/stickers) configured                                                          |
+|                                      `y`                                      | [CopyToClipboard()](#copytoclipboard)       | Copy item to the clipboard. More info [in its section](#copytoclipboard)                                                           |
 |                                                                               | [AddOptions()](#addoptions)                 | Add item(s) to the queue with specified options. More info [in its section](#addoptions)                                           |
 |                                                                               | [DeleteFromPlaylist()](#deletefromplaylist) | Delete item(s) from a playlist. More info [in its section](#deletefromplaylist)                                                    |
 
@@ -444,6 +445,51 @@ AddOptions(kind: Modal([
     ("End of queue and play", (all: false, autoplay: First, position: EndOfQueue)),
     ("After the current song", (all: false, autoplay: None, position: AfterCurrentSong)),
 ]))
+```
+
+#### CopyToClipboard
+
+A configurable keybind which lets you copy items under the cursor in queue and browser panes to the
+system clipboard. Your terminal needs to support OSC52 escape sequence for this to work.
+
+For directories this will always copy the directory name. For songs you can select what format to you
+want to copy.
+
+This reuses the [properties](/configuration/properties) like the rest of the program but styles are obviously ignored.
+
+##### Syntax
+
+`CopyToClipboard(kind: <kind>)`
+
+`CopyToClipboard(kind: Content(all: <bool>, content: <content>))`
+
+`CopyToClipboard(kind: Modal([("item1", (all: <bool>, content: <content>))]))`
+
+Possible values for the action `<kind>` are either a `Modal` or `Content`. Where `Modal` takes a list of
+tuples of a label and the content configuration and `Content` takes just a single content configuration.
+
+##### Examples
+
+- Copy song(s) to the clipboard in the `Artist - Title` format.
+
+```rust showLineNumbers=false
+CopyToClipboard(kind: Content(all: false, content: Metadata([(kind: Property(Artist)), (kind: Text(" - ")), (kind: Property(Title))]))),
+```
+
+- Copy _all_ songs in the directory to the clipboard in the `Artist - Title` format separated by a newline.
+
+```rust showLineNumbers=false
+CopyToClipboard(kind: Content(all: true, content: Metadata([(kind: Property(Artist)), (kind: Text(" - ")), (kind: Property(Title))]))),
+```
+
+- Display a modal with predefined config options
+
+```rust showLineNumbers=false
+CopyToClipboard(kind: Modal([
+    ("Displayed value", (content: DisplayedValue)),
+    ("Artist - Title", (content: Metadata([(kind: Property(Artist)), (kind: Text(" - ")), (kind: Property(Title))]))),
+    ("Filename", (content: Metadata([(kind: Property(Filename))]))),
+])),
 ```
 
 ### Queue
