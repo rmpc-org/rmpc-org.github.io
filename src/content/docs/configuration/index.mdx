@@ -343,6 +343,29 @@ Execute given command when rmpc resizes. First element of the array is the comma
 arguments passed to the command. Nothing will be executed if left empty. Check [on_resize](/guides/on_resize)
 for more info.
 
+### on_exit
+
+<ConfigValue name="on_exit" type="other" customText={'["rmpc", "--address", "/path/to/socket", "stop"]'} />
+
+Execute given command when rmpc exits. First element of the array is the command to execute and the rest are the
+arguments passed to the command. Nothing will be executed if left empty.
+
+The command receives the same environment variables as `on_song_change` (CURRENT_SONG, STATE, PID, etc.).
+
+#### Examples
+
+Stop playback on exit:
+
+```ron
+on_exit: Some(["rmpc", "--address", "/tmp/mpd_socket", "stop"]),
+```
+
+Pause on exit:
+
+```ron
+on_exit: Some(["rmpc", "--address", "/tmp/mpd_socket", "pause"]),
+```
+
 ### search
 
 <ConfigValue name="search" type="other" customText="<search>" href="/configuration/search/" />
