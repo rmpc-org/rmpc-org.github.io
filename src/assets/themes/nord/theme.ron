@@ -148,21 +148,27 @@
                     (size: "12%", borders: "NONE", pane: Component("tab_bar_right")),
             ]),
         "header_line_1": Split(direction: Horizontal, panes: [
-                            (size: "26%", pane: Component("header_element_1")),
-                            (size: "48%", pane: Component("header_element_2")),
-                            (size: "26%", pane: Component("header_element_3")),
+                            (size: "22%", pane: Component("header_element_1")),
+                            (size: "1", pane: Component("header_element_space")),
+                            (size: "56%", pane: Component("header_element_2")),
+                            (size: "1", pane: Component("header_element_space")),
+                            (size: "22%", pane: Component("header_element_3")),
                             (size: "2", pane: Component("header_element_right_end")),
             ]),
         "header_line_2": Split(direction: Horizontal, panes: [
-                            (size: "26%", pane: Component("header_element_4")),
-                            (size: "48%", pane: Component("header_element_5")),
-                            (size: "26%", pane: Component("header_element_6")),
+                            (size: "22%", pane: Component("header_element_4")),
+                            (size: "1", pane: Component("header_element_space")),
+                            (size: "56%", pane: Component("header_element_5")),
+                            (size: "1", pane: Component("header_element_space")),
+                            (size: "22%", pane: Component("header_element_6")),
                             (size: "2", pane: Component("header_element_right_end")),
             ]),
         "header_line_3": Split(direction: Horizontal, panes: [
-                            (size: "26%", pane: Component("header_element_7")),
-                            (size: "48%", pane: Component("header_element_8")),
-                            (size: "26%", pane: Component("header_element_9")),
+                            (size: "25%", pane: Component("header_element_7")),
+                            (size: "1", pane: Component("header_element_space")),
+                            (size: "50%", pane: Component("header_element_8")),
+                            (size: "1", pane: Component("header_element_space")),
+                            (size: "25%", pane: Component("header_element_9")),
                             (size: "2", pane: Component("header_element_right_end")),
 
             ]),
@@ -249,7 +255,7 @@
                                 (kind: Property(Song(Title)), style: (fg: "#d8dee9",modifiers: "Bold"),
                                     default: (kind: Property(Song(Filename)), style: (fg: "#d8dee9",modifiers: "Bold"),
                                         default: (kind: Text("Unknown Title"), style: (fg: "#d8dee9",modifiers: "Bold"))))
-                            ], align: Center))
+                            ], align: Center, scroll_speed: 4))
                 ),
             ]
         ),           
@@ -280,8 +286,6 @@
                          (kind: Transform(Replace(content: (kind: Property(Status(InputMode()))), replacements: [
                                  (match:  "Normal", replace: (kind: Group([(kind: Text("N"),style: (fg: "#4c566a", modifiers: "Bold"))]))),
                                  (match:  "Insert", replace: (kind: Group([(kind: Text("I"),style: (fg: "#d8dee9", modifiers: "Bold"))]))),
-                                 (match:  "Visual", replace: (kind: Group([(kind: Text("V"),style: (fg: "#d8dee9", modifiers: "Bold"))]))),
-                                 (match:  "Command", replace: (kind: Group([(kind: Text("C"),style: (fg: "#d8dee9", modifiers: "Bold"))]))),
                              ]))),
                      ], align: Right))
                ),
@@ -311,7 +315,7 @@
                                  (kind: Text(" - "), style: (fg: "#d8dee9")),
                                  (kind: Property(Song(Album)),style: (fg: "#81a1c1" ),
                                      default: (kind: Text("Unknown Album"), style: (fg: "#81a1c1")))
-                             ], align: Center))
+                             ], align: Center, scroll_speed: 4))
                  ),
             ]
         ),           
@@ -355,7 +359,7 @@
                                    (kind: Text(" - "), style: (fg: "#4c566a")),
                                    (kind: Property(Song(Other("composer"))),style: (fg: "#4c566a"),
                                        default: (kind: Text("Unknown Composer"), style: (fg: "#4c566a"))),
-                               ], align: Center))
+                               ], align: Center, scroll_speed: 4))
                    ),
             ]
         ),           
@@ -384,6 +388,15 @@
             panes: [
                (size: "100%", pane: Pane(Property(content: [
                                (kind: Text(" ]"),style: (fg: "#81a1c1", modifiers: "Bold")),
+                           ], align: Right))
+               ),
+            ]
+        ),           
+        "header_element_space": Split(
+            direction: Horizontal,
+            panes: [
+               (size: "100%", pane: Pane(Property(content: [
+                               (kind: Text(" ")),
                            ], align: Right))
                ),
             ]
