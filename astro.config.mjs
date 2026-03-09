@@ -5,9 +5,11 @@ import starlightVersions from "starlight-versions";
 
 import react from "@astrojs/react";
 
+import sitemap from "@astrojs/sitemap";
+
 // https://astro.build/config
 export default defineConfig({
-    site: "https://rmpc-org.github.io",
+    site: "https://rmpc.mierak.dev",
     base: "/",
     build: {
         format: "directory",
@@ -26,6 +28,13 @@ export default defineConfig({
                     attrs: {
                         property: "og:image",
                         content: "https://github.com/mierak/rmpc/raw/master/assets/preview.png",
+                    },
+                },
+                {
+                    tag: "link",
+                    attrs: {
+                        rel: "sitemap",
+                        content: "/sitemap-index.xml",
                     },
                 },
             ],
@@ -119,5 +128,7 @@ export default defineConfig({
             },
         }),
         react(),
+        sitemap(),
     ],
 });
+
