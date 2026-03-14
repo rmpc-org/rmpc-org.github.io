@@ -50,8 +50,8 @@
                 ])
         ),
         (name: "Queue", pane: Split(direction: Vertical, panes: [
-                    (size: "3", borders: "ALL", border_symbols: Rounded, pane: Pane(QueueHeader())),
-                    (size: "100%", borders: "ALL", border_symbols: Rounded,
+                    (size: "2", borders: "TOP | RIGHT | LEFT", border_symbols: Rounded, pane: Pane(QueueHeader())),
+                    (size: "100%", borders: "ALL", border_symbols: Library("rounded_collapsed_top"),
                                     border_title: [(kind: Property(Song(File)), style: (fg: "#4c566a"))],
                                     border_title_position: Bottom,
                                     border_title_alignment: Right,
