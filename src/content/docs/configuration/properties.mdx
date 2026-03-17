@@ -148,7 +148,7 @@ about parameters and examples. All the examples below assume that the properties
         },
         {
             cells: ["`Other(value)`", "Display any arbitrary metadata tag supported by MPD"],
-            parameters: ["`value`: String, required, name of the tag to display"],
+            parameters: [{name: "`value`", type: "String", description: "required, name of the tag to display"}],
             example: '(kind: Property(Song(Other("albumartist")))),',
             exampleDescription: "Display value of the albumartist tag"
         },
@@ -170,56 +170,56 @@ about parameters and examples. All the examples below assume that the properties
         {
             cells: ["`StateV2(...)`", "Current playback state, one of `Playing`, `Paused`, `Stopped`"],
             parameters: [
-                "`playing_label`: String, optional, defaults to `Playing`",
-                "`paused_label`: String, optional, defaults to `Paused`",
-                "`stopped_label`: String, optional, defaults to `Stopped`",
-                "`playing_style`: Style, optional",
-                "`paused_style`: Style, optional",
-                "`stopped_style`: Style, optional",
+                { name: "`playing_label`", type: "String", description: "optional, defaults to `Playing`" },
+                { name: "`paused_label`", type: "String", description: "optional, defaults to `Paused`" },
+                { name: "`stopped_label`", type: "String", description: "optional, defaults to `Stopped`" },
+                { name: "`playing_style`", type: "Style", description: "optional" },
+                { name: "`paused_style`", type: "Style", description: "optional" },
+                { name: "`stopped_style`", type: "Style", description: "optional" },
             ],
             example: '(kind: Property(Status(StateV2(playing_label: "P", paused_label: "||", stopped_label: "S", playing_style: (fg: "blue"), paused_style: (fg: "yellow"), stopped_style: (fg: "red"))))),'
         },
         {
             cells: ["`RepeatV2(...)`", "Repeat status"],
             parameters: [
-                "`on_label`: String, optional, defaults to `On`",
-                "`off_label`: String, optional, defaults to `Off`",
-                "`on_style`: Style, optional",
-                "`off_style`: Style, optional",
+                { name: "`on_label`", type: "String", description: "optional, defaults to `On`" },
+                { name: "`off_label`", type: "String", description: "optional, defaults to `Off`" },
+                { name: "`on_style`", type: "Style", description: "optional" },
+                { name: "`off_style`", type: "Style", description: "optional" },
             ],
             example: '(kind: Property(Status(RepeatV2(on_label: "ON", off_label: "OFF", on_style: (fg: "blue"), on_off: (fg: "red"))))),'
         },
         {
             cells: ["`RandomV2(...)`", "Random status"],
             parameters: [
-                "`on_label`: String, optional, defaults to `On`",
-                "`off_label`: String, optional, defaults to `Off`",
-                "`on_style`: Style, optional",
-                "`off_style`: Style, optional",
+                { name: "`on_label`", type: "String", description: "optional, defaults to `On`" },
+                { name: "`off_label`", type: "String", description: "optional, defaults to `Off`" },
+                { name: "`on_style`", type: "Style", description: "optional" },
+                { name: "`off_style`", type: "Style", description: "optional" },
             ],
             example: '(kind: Property(Status(SingleV2(on_label: "ON", off_label: "OFF", on_style: (fg: "blue"), on_off: (fg: "red"))))),'
         },
         {
             cells: ["`SingleV2(...)`", "Single status"],
             parameters: [
-                "`on_label`: String, optional, defaults to `On`",
-                "`off_label`: String, optional, defaults to `Off`",
-                "`oneshot_label`: String, optional, defaults to `Oneshot`",
-                "`on_style`: Style, optional",
-                "`off_style`: Style, optional",
-                "`oneshot_style`: Style, optional",
+                { name: "`on_label`", type: "String", description: "optional, defaults to `On`" },
+                { name: "`off_label`", type: "String", description: "optional, defaults to `Off`" },
+                { name: "`oneshot_label`", type: "String", description: "optional, defaults to `Oneshot`" },
+                { name: "`on_style`", type: "Style", description: "optional" },
+                { name: "`off_style`", type: "Style", description: "optional" },
+                { name: "`oneshot_style`", type: "Style", description: "optional" },
             ],
             example: '(kind: Property(Status(SingleV2(on_label: "ON", off_label: "OFF", oneshot_label: "OS_ON", on_style: (fg: "blue"), on_off: (fg: "red"), oneshot_style: (fg: "yellow"))))),'
         },
         {
             cells: ["`ConsumeV2(...)`", "Consume status"],
             parameters: [
-                "`on_label`: String, optional, defaults to `On`",
-                "`off_label`: String, optional, defaults to `Off`",
-                "`oneshot_label`: String, optional, defaults to `Oneshot`",
-                "`on_style`: Style, optional",
-                "`off_style`: Style, optional",
-                "`oneshot_style`: Style, optional",
+                { name: "`on_label`", type: "String", description: "optional, defaults to `On`" },
+                { name: "`off_label`", type: "String", description: "optional, defaults to `Off`" },
+                { name: "`oneshot_label`", type: "String", description: "optional, defaults to `Oneshot`" },
+                { name: "`on_style`", type: "Style", description: "optional" },
+                { name: "`off_style`", type: "Style", description: "optional" },
+                { name: "`oneshot_style`", type: "Style", description: "optional" },
             ],
             example: '(kind: Property(Status(ConsumeV2(on_label: "ON", off_label: "OFF", oneshot_label: "OS_ON", on_style: (fg: "blue"), on_off: (fg: "red"), oneshot_style: (fg: "yellow"))))),'
         },
@@ -246,14 +246,14 @@ about parameters and examples. All the examples below assume that the properties
         {
             cells: ["`QueueLength(...)`", "Number of songs in the queue"],
             parameters: [
-                "`thousands_separator`: String, optional, defaults to `,`",
+                { name: "`thousands_separator`", type: "String", description: "optional, defaults to `,`" },
             ],
             example: '(kind: Property(Status(QueueLength(thousands_separator: ",")))),'
         },
         {
             cells: ["`QueueTimeTotal(...)`", "Total duration of songs in the queue"],
             parameters: [
-                "`separator`: String, optional",
+                { name: "`separator`", type: "String", description: "optional" },
             ],
             example: '\
     (kind: Property(Status(QueueTimeTotal())))                       // "4:06" (default, no separator)\n\
@@ -268,7 +268,7 @@ about parameters and examples. All the examples below assume that the properties
         },
         {
             cells: ["`QueueTimeRemaining(...)`", "Total time left in the queue (remainder of current song + the rest of the queue)"],
-            parameters: ["`separator`: String, optional"],
+            parameters: [{ name: "`separator`", type: "String", description: "optional" }],
             example: '\
     (kind: Property(Status(QueueTimeRemaining())))                       // "2:34" (default, no separator)\n\
     (kind: Property(Status(QueueTimeRemaining(separator: ","))))         // "2m,34s"\n\
@@ -325,8 +325,8 @@ about parameters and examples. All the examples below assume that the properties
             cells: ["`States(...)`", "Playback modifiers in format `Repeat / Random / Consume / Single`"],
             example: '(kind: Property(Widget(States(active_style: (fg: "blue"), separator_style: (fg: "gray"))))),',
             parameters: [
-                "`active_style`: Style, optional",
-                "`separator_style`: Style, optional",
+                {name: "`active_style`", type: "Style", description: "optional" },
+                {name: "`separator_style`", type: "Style", description: "optional" },
             ],
         },
         { 
@@ -347,9 +347,9 @@ about parameters and examples. All the examples below assume that the properties
         {
             cells: ["`Truncate(...)`", "Truncate the value to specified number of characters"],
             parameters: [
-                "`content`: Property, content that is to be truncated",
-                "`from_start`: bool, optional, whether to truncate from the start of the input",
-                "`length`: number, length in characters to truncate to",
+                { name :"`content`", type: "Property", description: "content that is to be truncated" },
+                { name :"`from_start`", type: "bool", description: "optional, whether to truncate from the start of the input" },
+                { name :"`length`", type: "number", description: "length in characters to truncate to" },
             ],
             exampleDescription: "Show value of the date tag and truncates it to the first 4 characters: 2025-01-01 -> 2025",
             example: '(kind: Transform(Truncate(content: (kind: Property(Song(Other("date")))), length: 4, from_start: false)))',
@@ -357,8 +357,8 @@ about parameters and examples. All the examples below assume that the properties
         {
             cells: ["`Replace(...)`", "Replace the value with another property if matched"],
             parameters: [
-                "`content`: Property, content that is to be replaced if matched",
-                "`replacements`: array of objects to defining one or more replacements",
+                { name: "`content`", type: "Property", description: "content that is to be replaced if matched" },
+                { name: "`replacements`", type: "array", description: "array of objects to defining one or more replacements" },
             ],
             exampleDescription: "Replace the liked sticker value with a heart emoji",
             example: '\

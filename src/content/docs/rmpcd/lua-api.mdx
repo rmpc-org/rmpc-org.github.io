@@ -1,0 +1,615 @@
+---
+title: Lua plugin API
+description: rmpcd Lua plugin API
+sidebar:
+    order: 20
+---
+
+import PropertyTable from "../../../components/PropertyTable.astro";
+
+Rmpcd provides a set of functions available on the global scope to help with plugin development.
+Each of the plugins runs on a fully separate Lua VM and as such they are completely isolated from
+each other which means that they do not share state and cannot block each other.
+
+You also should not use any of the Lua built in blocking APIs such as `io` library as that could
+starve rmpcd's async executor.
+
+## Available modules
+
+These modules are available on the global scope
+
+- [mpd](#mpd) - Functions to interact with MPD directly. These are relatively low level primitives
+  mirroring the [MPD protocol](https://mpd.readthedocs.io/en/latest/protocol.html)
+- [fs](#fs) - A set of functions used to interact with the filesystem
+- [http](#http) - A simple HTTP client
+- [log](#log) - Logging facilities
+- [process](#process) - To spawn external programs
+- [sync](#sync) - Utilities to for asynchronous execution
+- [util](#util) - Set of random utility functions that do not fit anywhere else
+
+## MPD
+
+These functions correspond to the [MPD
+protocol](https://mpd.readthedocs.io/en/latest/protocol.html), see its documentation for more
+details.
+
+They are available on global scope by accessing the `mpd` table.
+
+<PropertyTable
+    headers={["Function", "Description"]}
+    rows={[
+        {
+            cells: ["`set_song_sticker`", "Set a song sticker"],
+            parameters: [
+                { name: "`uri`", type: "string", description: "Song URI" },
+                { name: "`name`", type: "string", description: "Sticker name" },
+                { name: "`value`", type: "string", description: "Sticker value" },
+            ],
+            returns: [
+                { type: "`boolean`", description: "Whether the call was successful" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`get_song_sticker`", "Get a song sticker value"],
+            parameters: [
+                { name: "`uri`", type: "string", description: "Song URI" },
+                { name: "`name`", type: "string", description: "Sticker name" },
+            ],
+            returns: [
+                { type: "`string | nil`", description: "The sticker value if success, nil otherwise" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`set_consume`", "Set the consume state"],
+            parameters: [{ name: "`value`", type: '`"on"`, `"off"` or `"oneshot"`', description: "The consume state" }],
+            returns: [
+                { type: "`boolean`", description: "Whether the call was successful" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`set_crossfade`", "Set crossfade duration"],
+            parameters: [{ name: "`seconds`", type: "number", description: "Crossfade duration in seconds" }],
+            returns: [
+                { type: "`boolean`", description: "Whether the call was successful" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`set_random`", "Set the random state"],
+            parameters: [{ name: "`value`", type: "boolean", description: "Whether to enable or disable random" }],
+            returns: [
+                { type: "`boolean`", description: "Whether the call was successful" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`set_repeat`", "Set the repeat state"],
+            parameters: [{ name: "`value`", type: "boolean", description: "Whether to enable or disable repeat" }],
+            returns: [
+                { type: "`boolean`", description: "Whether the call was successful" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`set_single`", "Set the single state"],
+            parameters: [{ name: "`value`", type: '`"on"`, `"off"` or `"oneshot"`', description: "The single state" }],
+            returns: [
+                { type: "`boolean`", description: "Whether the call was successful" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`set_volume`", "Set MPD's volume"],
+            parameters: [{ name: "`volume`", type: "number", description: "Volume between 0 and 100" }],
+            returns: [
+                { type: "`boolean`", description: "Whether the call was successful" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`get_volume`", "Get MPD's current volume"],
+            returns: [
+                { type: "`number | nil`", description: "The volume value if successful" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`volume`", "Set MPD's volume, supports relative change"],
+            parameters: [
+                {
+                    name: "`value`",
+                    type: "string",
+                    description: "`+5` to increase volume by 5, `-5` to decrease by 5 and `5` to set to 5",
+                },
+            ],
+            returns: [
+                { type: "`boolean`", description: "Whether the call was successful" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`prev`", "Switch to the previous song"],
+            returns: [
+                { type: "`boolean`", description: "Whether the call was successful" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`next`", "Switch to the next song"],
+            returns: [
+                { type: "`boolean`", description: "Whether the call was successful" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`play`", "Start playback"],
+            returns: [
+                { type: "`boolean`", description: "Whether the call was successful" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`pause`", "Pause playback"],
+            returns: [
+                { type: "`boolean`", description: "Whether the call was successful" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`stop`", "Stop playback"],
+            returns: [
+                { type: "`boolean`", description: "Whether the call was successful" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`toggle_pause`", "Toggle pause state on/off"],
+            returns: [
+                { type: "`boolean`", description: "Whether the call was successful" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`seek_current`", "Seek the current song"],
+            parameters: [
+                {
+                    name: "`value`",
+                    type: "string",
+                    description:
+                        "`+5` to seek forward by 5 seconds, `-5` to seek backwards by 5 seconds and `5` to seek to the 5th second directly",
+                },
+            ],
+            returns: [
+                { type: "`boolean`", description: "Whether the call was successful" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`get_status`", "Returns MPD's current status info"],
+            returns: [
+                { type: "`MpdStatus`", description: "MPD's current status" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: [
+                "`album_art`",
+                "Get song's album art by searching for cover.jpg, cover.png or cover.webp in the song's directory",
+            ],
+            parameters: [
+                {
+                    name: "`uri`",
+                    type: "string",
+                    description: "The song URI",
+                },
+            ],
+            returns: [
+                { type: "`number[] | nil`", description: "Raw bytes of the image if successful" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`read_picture`", "Get song's embedded image"],
+            parameters: [
+                {
+                    name: "`uri`",
+                    type: "string",
+                    description: "The song URI",
+                },
+            ],
+            returns: [
+                { type: "`number[] | nil`", description: "Raw bytes of the image if successful" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`subscribe`", "Subscribe to a channel"],
+            parameters: [
+                {
+                    name: "`channel`",
+                    type: "string",
+                    description: "Channel name",
+                },
+            ],
+            returns: [
+                { type: "`boolean`", description: "Whether the call was successful" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`unsubscribe`", "Unsubscribe from a channel"],
+            parameters: [
+                {
+                    name: "`channel`",
+                    type: "string",
+                    description: "Channel name",
+                },
+            ],
+            returns: [
+                { type: "`boolean`", description: "Whether the call was successful" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`channels`", "List of currently active channels"],
+            returns: [
+                { type: "`string[] | nil`", description: "List of active channels if successful" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`send_message`", "Send message to a channel"],
+            parameters: [
+                {
+                    name: "`channel`",
+                    type: "string",
+                    description: "Channel name",
+                },
+                {
+                    name: "`message`",
+                    type: "string",
+                    description: "Message to send",
+                },
+            ],
+            returns: [
+                { type: "`boolean`", description: "Whether the call was successful" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: [
+                "`read_messages`",
+                "Read messages from all channels that rmpcd is currently subscribed to, this probably should not be used directly unless you know what you are doing",
+            ],
+            returns: [
+                { type: "`table<string, string[]>`", description: "Messages if successful" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+    ]}
+/>
+
+## FS
+
+Filesystem API. These are available on global scope by accessing the `fs` table.
+
+<PropertyTable
+    headers={["Function", "Description"]}
+    rows={[
+        {
+            cells: ["`exists`", "Check whether a file exists"],
+            parameters: [{ name: "`path`", type: "string", description: "File path" }],
+            returns: [
+                { type: "`boolean`", description: "true if the file exists" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`create_dir_all`", "Create all directories in the path if they do not exist already"],
+            parameters: [{ name: "`path`", type: "string", description: "Directory path" }],
+            returns: [
+                { type: "`boolean`", description: "Whether the call was successful" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`create_dir`", "Create a directory"],
+            parameters: [{ name: "`path`", type: "string", description: "Directory path" }],
+            returns: [
+                { type: "`boolean`", description: "Whether the call was successful" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`write`", "Write raw bytes to a file"],
+            parameters: [
+                { name: "`path`", type: "string", description: "File path" },
+                { name: "`contents`", type: "number[]", description: "Raw bytes" },
+            ],
+            returns: [
+                { type: "`boolean`", description: "Whether the call was successful" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`write_str`", "Write a string to a file"],
+            parameters: [
+                { name: "`path`", type: "string", description: "File path" },
+                { name: "`contents`", type: "string", description: "Content to write" },
+            ],
+            returns: [
+                { type: "`boolean`", description: "Whether the call was successful" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`read`", "Read raw bytes from a file"],
+            parameters: [{ name: "`path`", type: "string", description: "File path" }],
+            returns: [
+                { type: "`number[] | nil`", description: "Raw bytes if successful" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`read_str`", "Read file as string"],
+            parameters: [{ name: "`path`", type: "string", description: "File path" }],
+            returns: [
+                { type: "`string | nil`", description: "String content if successful" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`delete`", "Delete a file"],
+            parameters: [{ name: "`path`", type: "string", description: "File path" }],
+            returns: [
+                { type: "`boolean`", description: "Whether the file was deleted" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`remove_dir`", "Remove a directory"],
+            parameters: [{ name: "`path`", type: "string", description: "Directory path" }],
+            returns: [
+                { type: "`boolean`", description: "Whether the directory was deleted" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`remove_dir`", "Remove a directory recursively"],
+            parameters: [{ name: "`path`", type: "string", description: "Directory path" }],
+            returns: [
+                { type: "`boolean`", description: "Whether the directory was deleted" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+    ]}
+/>
+
+## Http
+
+A simple HTTP client. Available on the global scope by accessing the `http` table.
+
+<PropertyTable
+    headers={["Function", "Description"]}
+    rows={[
+        {
+            cells: ["`call`", "Do an HTTP call"],
+            parameters: [
+                { name: "`url`", type: "string", description: "URL to call to" },
+                { name: "`opts`", type: "HttpRequestOpts", description: "Options for the HTTP request" },
+            ],
+            returns: [{ type: "`HttpResponse`", description: "The response, see below for more details" }],
+        },
+        {
+            cells: ["`get`", "Do a GET request"],
+            parameters: [
+                { name: "`url`", type: "string", description: "URL to call to" },
+                { name: "`opts`", type: "HttpGetOpts", description: "Options for the GET HTTP request" },
+            ],
+            returns: [{ type: "`HttpResponse`", description: "The response, see below for more details" }],
+        },
+        {
+            cells: ["`post`", "Do a POST request"],
+            parameters: [
+                { name: "`url`", type: "string", description: "URL to call to" },
+                { name: "`opts`", type: "HttpGetOpts", description: "Options for the POST HTTP request" },
+            ],
+            returns: [{ type: "`HttpResponse`", description: "The response, see below for more details" }],
+        },
+    ]}
+/>
+
+### Opts
+
+Each of the http functions takes an opts table.
+
+<PropertyTable
+    headers={["Property", "Description"]}
+    rows={[
+        {
+            cells: ["`method`", "HTTP method string"],
+        },
+        {
+            cells: ["`headers`", "table<string, string> of HTTP headers"],
+        },
+        {
+            cells: ["`body`", "String body"],
+        },
+        {
+            cells: ["`params`", "table<string, string> to send as query parameters "],
+        },
+    ]}
+/>
+
+The `get` function only takes `headers` and `params` in opts.
+The `post` function only takes `headers`, `params` and body in opts.
+
+### Response
+
+<PropertyTable
+    headers={["Property or function", "Description"]}
+    rows={[
+        {
+            cells: ["`code`", "Http Response code"],
+        },
+        {
+            cells: ["`error`", "String error if any"],
+        },
+        {
+            cells: ["`body`", "Raw string body of the response"],
+        },
+        {
+            cells: ["`text`", "Gets the body text"],
+            returns: [{ type: "`string`", description: "The body" }],
+        },
+        {
+            cells: ["`json`", "Gets the body json as a table"],
+            returns: [{ type: "`table`", description: "The json value" }],
+        },
+    ]}
+/>
+
+The response is a table with following properties and functions:
+
+## Log
+
+Logging facilities. Available on the global scope by accessing the `log` table.
+
+<PropertyTable
+    headers={["Function", "Description"]}
+    rows={[
+        {
+            cells: ["`info`", "Log at the info level"],
+            parameters: [{ name: "`content`", type: "string", description: "String content to log" }],
+        },
+        {
+            cells: ["`warn`", "Log at the warn level"],
+            parameters: [{ name: "`content`", type: "string", description: "String content to log" }],
+        },
+        {
+            cells: ["`error`", "Log at the error level"],
+            parameters: [{ name: "`content`", type: "string", description: "String content to log" }],
+        },
+        {
+            cells: ["`debug`", "Log at the debug level"],
+            parameters: [{ name: "`content`", type: "string", description: "String content to log" }],
+        },
+        {
+            cells: ["`trace`", "Log at the trace level"],
+            parameters: [{ name: "`content`", type: "string", description: "String content to log" }],
+        },
+    ]}
+/>
+
+## Process
+
+Spawn external processes. Available on the global scope by accessing the `process` table.
+
+<PropertyTable
+    headers={["Function", "Description"]}
+    rows={[
+        {
+            cells: ["`spawn`", "Spawn an external process"],
+            parameters: [
+                {
+                    name: "`cmd`",
+                    type: "string[]",
+                    description: "First element is the program to spawn, rest are passed in as arguments",
+                },
+            ],
+            returns: [
+                { type: "`number | nil`", description: "The child process PID" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+    ]}
+/>
+
+## Sync
+
+Execute things asynchronously. Available on the global scope by accessing the `sync` table.
+
+<PropertyTable
+    headers={["Function", "Description"]}
+    rows={[
+        {
+            cells: ["`set_timeout`", "Schedule a function to run at some later time"],
+            parameters: [
+                { name: "`timeout_ms`", type: "number", description: "Timeout in milliseconds" },
+                { name: "`callback`", type: "function", description: "A function to run when the timeout expires" },
+            ],
+            returns: [
+                {
+                    type: "`TimeoutHandle`",
+                    description: "A handle to the timeout, call handle.cancel() to cancel the timeout",
+                },
+            ],
+        },
+        {
+            cells: ["`set_interval`", "Schedule a function to run repeatedly with an interval"],
+            parameters: [
+                { name: "`interval_ms`", type: "number", description: "Interval in milliseconds" },
+                { name: "`callback`", type: "function", description: "A function to run every interval tick" },
+            ],
+            returns: [
+                {
+                    type: "`TimeoutHandle`",
+                    description: "A handle to the interval, call handle.cancel() to cancel the interval",
+                },
+            ],
+        },
+        {
+            cells: ["`debounce`", "Create a debounced version of a function"],
+            parameters: [
+                { name: "`interval_ms`", type: "number", description: "Interval in milliseconds" },
+                {
+                    name: "`callback`",
+                    type: "`function`",
+                    description: "A function to run when the debounce timeout expires",
+                },
+            ],
+            returns: [
+                {
+                    type: "`function`",
+                    description: "The debounced function",
+                },
+            ],
+        },
+    ]}
+/>
+
+## Util
+
+Set of random utilities that do not fit anywhere else. Available on the global scope by accessing
+the `util` table.
+
+<PropertyTable
+    headers={["Function", "Description"]}
+    rows={[
+        {
+            cells: ["`dump_table`", "Dump table to the logger"],
+            parameters: [{ name: "`tbl`", type: "table", description: "Dump the table to the logger" }],
+        },
+        {
+            cells: ["`md5`", "Compute an md5 hash of a value"],
+            parameters: [{ name: "`data`", type: "string", description: "Data to hash" }],
+            returns: [{ type: "`string`", description: "The md5 hash" }],
+        },
+        {
+            cells: ["`which`", "Check whether a program exists in path"],
+            parameters: [{ name: "`prog`", type: "string", description: "The program" }],
+            returns: [{ type: "`boolean`", description: "Whether the program exists" }],
+        },
+        {
+            cells: [
+                "`nil_or_null`",
+                "Check whether a value is nil or null, useful to for example validate HTTP responses",
+            ],
+            parameters: [{ name: "`value`", type: "any", description: "The value" }],
+            returns: [{ type: "`boolean`", description: "Whether the value is nil or nul" }],
+        },
+    ]}
+/>
