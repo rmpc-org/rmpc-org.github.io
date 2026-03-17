@@ -519,3 +519,41 @@ Keybinds specific to the queue pane.
 |     `C`     | JumpToCurrent            | Moves the cursor in Queue table to the currently playing song. Trigger twice to center the currently playing song.                                                                          |
 |     `X`     | Shuffle                  | Shuffles the whole queue or selected range(s)                                                                                                                                               |
 |             | SortByColumn(\<column\>) | Sorts the current queue by the \<column\>. \<column\> is a 1-based queue table's column index. Example columns: `artist`, `title` and `album` have \<column\> `1`, `2` and `3` respectively |
+|             | [Sort(..)](#sort)        | Sorts the queue by either the preconfigured format or shows a modal with options                                                                                                            |
+
+#### Sort
+
+A configurable keybind which lets sort the current queue
+
+##### Syntax
+
+`Sort(kind: <kind>)`
+
+`Sort(kind: Tags(tags: Tag[], descending: <bool>))`
+
+`Sort(kind: Modal([("item1", (tags: Tag[], descending: <bool>))]))`
+
+Possible values for the action `<kind>` are either a `Modal` or `Tags`. Where `Modal` takes a list
+of tuples of a label and the tags configuration and `Tags` takes just a single tags configuration.
+
+The descending flag inflences the initial sort order. If the queue is already sorted, executing the
+same sorting action again will reverse it.
+
+##### Examples
+
+- Sort by `artist` first, `album` second and `track` last
+
+```rust showLineNumbers=false
+Sort(kind: Tags(tags: [Artist, Album, Track], descending: false)),
+```
+
+- Display a modal with predefined sorting options
+
+```rust showLineNumbers=false
+Sort(kind: Modal([
+    ("AlbumArtist - Album - Track", (tags: [Other("albumartist"), Album, Track], descending: false)),
+    ("Title", (tags: [Title], descending: false)),
+    ("Artist", (tags: [Artist], descending: false)),
+])),
+
+```
