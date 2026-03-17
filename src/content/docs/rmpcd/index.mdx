@@ -1,0 +1,110 @@
+---
+title: Overview and installation
+description: Rmpcd overview and installation
+sidebar:
+    order: 1
+---
+
+Rmpcd is a small MPD client designed to serve as a companion to rmpc or other MPD frontends. It runs
+as a daemon in the background and can be configured to automate things that are otherwise unfit for
+a frontend.
+
+:::caution
+The project is in its early stages. It is slowly getting to a more stable form but still expect
+changes to everything.
+:::
+
+## Features
+
+Features:
+
+- Lua plugin API
+- MPRIS server implementation
+- A few plugins:
+    - [LastFM scrobbling](https://github.com/mierak/rmpc/blob/master/rmpcd/src/lua/builtin/lastfm.lua)
+    - [Playcount tracking](https://github.com/mierak/rmpc/blob/master/rmpcd/src/lua/builtin/playcount.lua)
+    - [Desktop notifications](https://github.com/mierak/rmpc/blob/master/rmpcd/src/lua/builtin/notify.lua)
+    - [Lyrics download](https://github.com/mierak/rmpc/blob/master/rmpcd/src/lua/builtin/lyrics.lua)
+
+## Installation
+
+Rmpcd can currently only be installed from the source code. This assumes you have git and rust
+installed already.
+
+```bash
+# Either with cargo directly
+cargo install --git https://github.com/mierak/rmpc.git rmpcd
+
+# Or clone the repo and run
+git clone https://github.com/mierak/rmpc.git
+cd rmpc
+cargo run --package rmpcd
+```
+
+## Setup
+
+Create an `init.lua` file at `$HOME/.config/rmpcd/init.lua`
+
+Example `init.lua` config:
+
+:::caution
+Please make sure to read the comments!
+:::
+
+```lua
+--@type Config
+local config = {}
+
+-- Address has the same syntax as rmpc
+config.address = "127.0.0.1:6600"
+
+-- Enable mpris server
+config.mpris = false
+
+-- List of additional MPD channels to subscribe to, you probably want to leave this commented out
+-- config.subscribe_channels = { "some_channel" }
+
+-- Automatically increment play count on song change
+rmpcd.install("#builtin.playcount")
+
+-- Install last fm scrobbling builtin
+-- For now you have to request an API key yourself due to LastFM's insane API
+-- design https://www.last.fm/api/account/create
+rmpcd.install("#builtin.lastfm"):setup({
+	api_key = "<your api key>",
+	shared_secret = "<your shared secret>",
+	update_now_playing = false,
+	enabled = true,
+})
+
+-- Install notification on song change builtin
+rmpcd.install("#builtin.notify"):setup({
+	debounce_delay = 1000,
+})
+
+-- Install the auto lyrics download builtin
+rmpcd.install("#builtin.lyrics"):setup({
+	debounce_delay = 1000,
+})
+
+-- Finally return the config to rmpcd
+return config
+
+```
+
+## LuaLS type definitions
+
+:::note
+This requires [Lua language server](https://github.com/LuaLS/lua-language-server) to be set up in
+your editor
+:::
+
+Type definitions are in `<repo root>/rmpcd/src/lua/builtin/types/`. Include them in your config by
+creating a `.luarc.json` at `$HOME/.config/rmpcd/.luarc.json`. In the future there will be a more
+convenient way to eject the type definitions from rmpcd directly.
+
+```json
+{
+    "workspace.library": ["<repo root>/rmpcd/src/lua/builtin/types"]
+}
+```

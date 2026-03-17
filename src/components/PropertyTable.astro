@@ -3,9 +3,16 @@ import { Code } from "astro-expressive-code/components";
 
 type TableRow = {
     cells: string[];
-    parameters?: string[];
+    parameters?: Parameter[];
+    returns?: Omit<Parameter, "name">[];
     example?: string;
     exampleDescription?: string | string[];
+};
+
+type Parameter = {
+    name: string;
+    type: string;
+    description?: string;
 };
 
 export interface Props {
@@ -34,15 +41,28 @@ function allBackticksToCodeBlock(input: string): string {
 
 const processedRows = rows.map((row) => {
     const cells = row.cells.map(allBackticksToCodeBlock);
-    const parameters = row?.parameters?.map(allBackticksToCodeBlock);
+    const parameters = row?.parameters?.map((param) => {
+        return {
+            name: allBackticksToCodeBlock(param.name),
+            type: allBackticksToCodeBlock(param.type),
+            description: param.description ? allBackticksToCodeBlock(param.description) : undefined,
+        };
+    });
+    const returns = row?.returns?.map((ret) => {
+        return {
+            type: allBackticksToCodeBlock(ret.type),
+            description: ret.description ? allBackticksToCodeBlock(ret.description) : undefined,
+        };
+    });
     let exampleDescription = row.exampleDescription;
     if (exampleDescription && typeof exampleDescription === "string") {
         exampleDescription = allBackticksToCodeBlock(exampleDescription);
     } else if (exampleDescription && Array.isArray(exampleDescription)) {
         exampleDescription = exampleDescription.map(allBackticksToCodeBlock);
     }
-    const hasExpandedContent = (parameters && parameters.length > 0) || row.example || !!exampleDescription;
-    return { cells, parameters, example: row.example, exampleDescription, hasExpandedContent };
+    const hasExpandedContent =
+        (parameters && parameters.length > 0) || (returns && returns.length > 0) || row.example || !!exampleDescription;
+    return { cells, parameters, returns, example: row.example, exampleDescription, hasExpandedContent };
 });
 ---
 
@@ -147,12 +167,29 @@ const processedRows = rows.map((row) => {
                                         {row.parameters && (
                                             <>
                                                 <h6>Parameters</h6>
-                                                <ul>
-                                                    {row.parameters.map((contentHtml) => (
-                                                        <li set:html={contentHtml} />
+                                                <table>
+                                                    {row.parameters.map((param) => (
+                                                        <tr>
+                                                            <td set:html={param.name} />
+                                                            <td set:html={param.type} />
+                                                            <td set:html={param.description} />
+                                                        </tr>
                                                     ))}
-                                                </ul>
+                                                </table>
                                             </>
+                                        )}
+                                        {row.returns && (
+                                            <div>
+                                                <h6>Returns</h6>
+                                                <table>
+                                                    {row.returns.map((param) => (
+                                                        <tr>
+                                                            <td set:html={param.type} />
+                                                            <td set:html={param.description} />
+                                                        </tr>
+                                                    ))}
+                                                </table>
+                                            </div>
                                         )}
                                         {(row.example || row.exampleDescription) && (
                                             <div>

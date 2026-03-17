@@ -92,6 +92,12 @@ export default defineConfig({
                     },
                 },
                 {
+                    label: "Rmpcd",
+                    autogenerate: {
+                        directory: "rmpcd",
+                    },
+                },
+                {
                     label: "Reference",
                     autogenerate: {
                         directory: "reference",
@@ -131,4 +137,3 @@ export default defineConfig({
         sitemap(),
     ],
 });
-

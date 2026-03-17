@@ -1,0 +1,112 @@
+---
+title: Creating plugins
+description: Creating rmpcd plugins
+sidebar:
+    order: 10
+---
+
+Plugins are created as separate lua modules. Each plugin inherits from the `RmpcdPlugin<Args>` class
+where `Args` generic is anything that will be passed to the setup function.
+
+## Functions
+
+A plugin has one or more functions that are called every time its corresponding event happens.
+
+### setup
+
+A setup function that will be called once when plugin initializes, can also be called from the main
+lua module to pass in configuration values.
+
+The function takes `self` as a first argument and `Args` as the second.
+
+:::caution
+The setup function can contain only primitive values, not functions.
+:::
+
+### song_change
+
+A function that will be called when a song changes.
+
+The function takes `self, the previous song and the song as arguments.
+
+### state_change
+
+A function that will be called when MPD's playback state changes.
+
+The function takes `self, the previous state and the new state as arguments.
+
+### idle_event
+
+A function that will be called when MPD's idle event is emitted.
+
+The function takes `self` and event name as arguments. The events can be one of: `"player" | "mixer"
+| "options" | "playlist" | "database" | "update" | "stored_playlist" | "sticker" | "subscription" |
+"shelf"`
+
+See [MPD protocol](https://mpd.readthedocs.io/en/latest/protocol.html) for more details.
+
+### shutdown
+
+A function that will be called before plugin is closed. Takes `self` as the only argument.
+
+### subscribed_channels
+
+Subscribe a plugin to MPD channel. Plugin's `message` function will be called when a message is
+received on this channel.
+
+The function takes `self, the channel name and the message as arguments.
+
+### message
+
+A function that will be called when a message is received on any of the subscribed channels.
+
+The function takes `self`, the channel name and the message as arguments.
+
+## Example
+
+```lua
+---@class SamplePluginArgs
+---@field enabled? boolean
+
+---@class SamplePlugin : RmpcdPlugin<SamplePluginArgs>
+---@field enabled boolean
+
+---@type SamplePlugin
+local M = {
+    enabled = true
+}
+
+-- will be called when a song changes
+M.song_change = function(self, _old, new)
+    if not self.enabled or new == nil then
+        return
+    end
+
+    log.info("Hey a new song is playing! " .. new.file)
+end
+
+-- will be called when playback is started, stopped or paused
+M.state_change = function(self, _old, new)
+    if not self.enabled then
+        return
+    end
+
+    log.info("MPD playback state is now: " .. new)
+end
+
+M.setup = function(self, args)
+    self.enabled = args.enabled
+end
+
+return M
+```
+
+Consider the above plugin saved in `$HOME/.config/rmpcd/plugins/test.lua`.
+
+Then install it by executing the following in your `$HOME/.config/rmpcd/init.lua`.
+
+```lua
+rmpcd.install("plugins.test"):setup({
+    enabled = true
+})
+```
