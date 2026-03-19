@@ -49,6 +49,11 @@ See [MPD protocol](https://mpd.readthedocs.io/en/latest/protocol.html) for more 
 
 A function that will be called before plugin is closed. Takes `self` as the only argument.
 
+### reconnect
+
+A function that is called after the connection to MPD is successfully re-established, if it was
+previously disconnected. It takes self as its only argument.
+
 ### subscribed_channels
 
 Subscribe a plugin to MPD channel. Plugin's `message` function will be called when a message is
