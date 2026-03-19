@@ -153,6 +153,13 @@ The `extra_yt_dlp_args`, if any, will be passed instead of the {} in the command
 Only use this if you are really sure you know what you are doing!
 :::
 
+### queue_disable_current_item_style_timeout_ms
+
+<ConfigValue name="queue_disable_current_item_style_timeout_ms" type="number" optional />
+
+Disables the highlight with [current_item_style](/configuration/theme#current_item_style) after the
+timeout elapses. The highlight will re-enable with the next keypress and the timeout will restart.
+
 ### duration_format
 
 <ConfigValue name="duration_format" type="string" optional />
