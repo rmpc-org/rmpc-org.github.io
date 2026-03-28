@@ -5,6 +5,9 @@ sidebar:
     order: 1
 ---
 
+import { Code } from "@astrojs/starlight/components";
+import initlua from "../../../../rmpc/assets/rmpcd/example_init.lua?raw";
+
 Rmpcd is a small MPD client designed to serve as a companion to rmpc or other MPD frontends. It runs
 as a daemon in the background and can be configured to automate things that are otherwise unfit for
 a frontend.
@@ -43,68 +46,23 @@ cargo run --package rmpcd
 
 ## Setup
 
-Create an `init.lua` file at `$HOME/.config/rmpcd/init.lua`
+After installation run:
 
-Example `init.lua` config:
-
-:::caution
-Please make sure to read the comments!
-:::
-
-```lua
---@type Config
-local config = {}
-
--- Address has the same syntax as rmpc
-config.address = "127.0.0.1:6600"
-
--- Enable mpris server
-config.mpris = false
-
--- List of additional MPD channels to subscribe to, you probably want to leave this commented out
--- config.subscribe_channels = { "some_channel" }
-
--- Automatically increment play count on song change
-rmpcd.install("#builtin.playcount")
-
--- Install last fm scrobbling builtin
--- For now you have to request an API key yourself due to LastFM's insane API
--- design https://www.last.fm/api/account/create
-rmpcd.install("#builtin.lastfm"):setup({
-	api_key = "<your api key>",
-	shared_secret = "<your shared secret>",
-	update_now_playing = false,
-	enabled = true,
-})
-
--- Install notification on song change builtin
-rmpcd.install("#builtin.notify"):setup({
-	debounce_delay = 1000,
-})
-
--- Install the auto lyrics download builtin
-rmpcd.install("#builtin.lyrics"):setup({
-	debounce_delay = 1000,
-})
-
--- Finally return the config to rmpcd
-return config
-
+```bash
+rmpcd init
+# You will see output similar to:
+2026-03-28T23:42:17.918458Z  INFO rmpcd/src/main.rs:109: Created default config at '/home/<user>/.config/rmpcd/init.lua'
+2026-03-28T23:42:17.918924Z  INFO rmpcd/src/main.rs:124: Created Lua API type definitions at '/home/<user>/.local/share/rmpcd/lua'
 ```
 
-## LuaLS type definitions
+This will create a default `init`.lua at the path shown in the log. It will also generate a
+`.luarc.json` file pointing to the type definitions, allowing your editor to provide autocompletion
+if you have the [Lua language server](https://github.com/LuaLS/lua-language-server) installed and
+configured.
 
-:::note
-This requires [Lua language server](https://github.com/LuaLS/lua-language-server) to be set up in
-your editor
-:::
+Rmpcd will keep the generated type definitions up to date automatically. Make sure to not edit these
+files directly.
 
-Type definitions are in `<repo root>/rmpcd/src/lua/builtin/types/`. Include them in your config by
-creating a `.luarc.json` at `$HOME/.config/rmpcd/.luarc.json`. In the future there will be a more
-convenient way to eject the type definitions from rmpcd directly.
+The generated `init.lua.` is shown below for reference:
 
-```json
-{
-    "workspace.library": ["<repo root>/rmpcd/src/lua/builtin/types"]
-}
-```
+<Code code={initlua} lang="lua" title="init.lua" frame="terminal" />
