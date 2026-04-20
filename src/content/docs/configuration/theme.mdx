@@ -162,7 +162,7 @@ Styles to use for the playlist symbol.
 #### symbols.marker_style
 
 <ConfigValue name="marker_style" customText="<style>" />
-<ConfigValue name="marker_highlighed_style" customText="<style>" />
+<ConfigValue name="marker_highlighted_style" customText="<style>" />
 <ConfigValue name="marker_current_style" customText="<style>" />
 
 Styles to use for the marker symbol.
@@ -465,8 +465,14 @@ browser_song_format: [
 
 ### lyrics
 
-### lyrics.timestamp
+#### lyrics.timestamp
 
 <ConfigValue name="lyrics.timestamp" type="boolean" default="false" />
 
 Sets the visibility of the timestamps in the lyrics pane.
+
+#### lyrics.alignment
+
+<ConfigValue name="lyrics.alignment" type={["Left", "Center", "Right"]}  />
+
+Sets the alignment of the displayed lyrics.
