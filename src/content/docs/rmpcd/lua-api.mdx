@@ -39,6 +39,30 @@ They are available on global scope by accessing the `mpd` table.
     headers={["Function", "Description"]}
     rows={[
         {
+            cells: ["`get_song`", "Get song by its URI"],
+            parameters: [{ name: "`uri`", type: "string", description: "Song URI" }],
+            returns: [
+                { type: "`Song | nil`", description: "The song object if found" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`get_song_by_id`", "Get song by its ID in the current queue"],
+            parameters: [{ name: "`id`", type: "number", description: "Song ID" }],
+            returns: [
+                { type: "`Song | nil`", description: "The song object if found" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`get_current_song`", "Get the currently playing song"],
+            parameters: [],
+            returns: [
+                { type: "`Song | nil`", description: "The song object if found" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
             cells: ["`set_song_sticker`", "Set a song sticker"],
             parameters: [
                 { name: "`uri`", type: "string", description: "Song URI" },
