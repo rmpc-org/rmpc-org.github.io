@@ -181,9 +181,9 @@ from the same issues as Sixel in Tmux, [more info here](https://github.com/tmux/
 Cons:
 
 - Has lower color depth than the alternatives.
-- Much lower image size can be transmitted through tmux due to sixel being a very size inefficient protocol.
-  Tmux supports only 1MB of data due to its internal buffering limitations. See [more info here](https://github.com/tmux/tmux/issues/1502#issuecomment-429710887).
-  You can limit your image size with [max_size_px](#max_size_px).
+- Much lower image size can be transmitted through tmux due to sixel being a very size inefficient
+  protocol. Tmux supports only 1MB of data by default. Increase this limit by setting
+  `input-buffer-size` in your tmux config. See `man tmux` for more info.
 
 ### Block
 
