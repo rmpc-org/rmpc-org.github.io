@@ -25,9 +25,9 @@ Rmpc has several pane_types which can be displayed. These are:
 | `QueueHeader()`                      | Header for the current queue, complimentary to the `Queue` pane                                                                                                                                                                                                             |
 | `Directories`                        | Browse music library by directory.                                                                                                                                                                                                                                          |
 | `Browser()`                          | A music library browser. Allows you to specify a root tag and an optional separator. `Browser(root_tag: "<tag>", separator: ";")`. Separator can be used to create multiple entries from one tag value, for example if a song has multiple `genre` values separated by `;`. |
-| `Artists`                            | Browse music library by `artist` tag. Equivalent to `Browser(root_tag: "artist")`                                                                                                                                                                                           |
-| `AlbumArtists`                       | Browse music library by `albumartist` tag. Equivalent to `Browser(root_tag: "albumartist")`                                                                                                                                                                                 |
-| `Albums`                             | Browse music library by `album` tag.                                                                                                                                                                                                                                        |
+| `Artists`                            | Browse music library by `artist` tag. Is an alias for `Browser` pane with "artist" and "album" levels.                                                                                                                                                                      |
+| `AlbumArtists`                       | Browse music library by `albumartist` tag. Is an alias for `Browser` pane with "albumartist" and "album" levels.                                                                                                                                                            |
+| `Albums`                             | Browse music library by `album` tag. Is an alias for `Browser` pane with just an "album" level.                                                                                                                                                                             |
 | `Playlists`                          | Browse saved playlists.                                                                                                                                                                                                                                                     |
 | `Search`                             | Search music library.                                                                                                                                                                                                                                                       |
 | `Lyrics`                             | Display synced lyrics.                                                                                                                                                                                                                                                      |
@@ -75,18 +75,72 @@ Pane(Property(
 
 ### Browser
 
-<ConfigValue name="Browser" customText="Pane(Browser(root_tag: <string>, separator: <string | None>))" />
+<ConfigValue name="Browser" customText="Pane(Browser(levels: BrowserLevel[]))" />
 
-A browser pane where the root level will be list of all `root_tag` values in your music database.
-The second level will all albums under that tag and the third and final level will be list of songs
-in the given album.
+A custom browser pane with user defined nesting levels.
 
-Separator allows you to synthesize multiple tags from a single value by splitting the value at the
-separator. The separator is optional and can be omitted.
+Each level defines one directory grouping in the browser. Each level groups the contained songs by
+one or more tags, can define sorting of the directories and what the directories will display. The
+levels can also be skipped if they contain only a single item.
 
-For example: `Pane(Browser(root_tag: "genre", separator: "/"))` will show all genres in your music
-library at the root level, if any song has genre value of "genre1/genre2" then "genre1" and "genre2"
-will show as separate entries.
+Each grouping field is a list of tags that serve as fallback. For example, if you want to group
+songs by an `albumartist` tag but if some of the songs do not have it, you can define a fallback to
+`artist`. This would be `group_by: [["albumartist", "artist"]]`.
+
+The first level is special, it can only define `group_by` with exactly one tag and nothing else. This
+is a limitation that might or might not be lifted in the future.
+
+Look at the following example and read the comments carefully to see what is possible:
+
+```rust
+Pane(Browser(
+    levels: [
+        (
+            // The first level is special, it can only have one tag with no fallback. This level
+            // will contain a list of all the genres in your music database.
+            group_by: [["genre"]],
+        ),
+        (
+            // Group all the songs in a given genre by "albumartist" or "artist" if albumartist is
+            // not present. This will produce a list of all the artist that have some songs with the given genre.
+            group_by: [["albumartist", "artist"]],
+            // Sort by the same tags as the grouping.
+            sort_by: [["albumartist", "artist"]],
+            // Display the albumartist value, artist if it does not exist and "no artist" for
+            // directory where all songs without either artist or albumartist will be grouped
+            // It is highly recommended to only use properties that are in the "group_by". Otherwise
+            // you might get some unexpected results since the values for the format are taken from
+            // the first song in the group.
+            format: [
+                (kind: Property(AlbumArtist), default: (kind: Property(Artist), default: (kind: Text("no artist")))),
+            ],
+            // Possible values are "Single" and "SingleEmpty"
+            // With "Single", if only one artist is in the directory, this level will be completely
+            // skipped
+            // With "SingleEmpty", if no artist is in the directory, meaning there would be only one
+            // item named "no artist", this level will be completely skipped
+            skip: SingleEmpty,
+        ),
+        (
+            // Group songs for the artist by "album" and "date" with fallback to "originaldate"
+            group_by: [["album"], ["date", "originaldate"]],
+            // Display "(1-1-1900) album name" as the format
+            format: [
+                (kind: Group([
+                    (kind: Text("(")),
+                    (kind: Property(Other("date"))),
+                    (kind: Text(") ")),
+                ])),
+                (kind: Property(Album)),
+            ],
+            // On the last level, skip can have one more value: UnpackEmpty
+            // If this directory would have albumA, albumB and songs without either album or date,
+            // they will be unpacked directly into this level instead of its separate directory.
+            skip: UnpackEmpty,
+        ),
+    ],
+)),
+```
 
 ### Volume
 
