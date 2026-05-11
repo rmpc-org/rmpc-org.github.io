@@ -635,5 +635,13 @@ the `util` table.
             parameters: [{ name: "`value`", type: "any", description: "The value" }],
             returns: [{ type: "`boolean`", description: "Whether the value is nil or nul" }],
         },
+        {
+            cells: ["`deserialize_ron `", "Deserialize a ron value"],
+            parameters: [{ name: "`data`", type: "number[]", description: "Input bytes" }],
+            returns: [
+                { type: "`any | nil`", description: "Deserialized value if success" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
     ]}
 />
