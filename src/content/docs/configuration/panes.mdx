@@ -85,7 +85,9 @@ levels can also be skipped if they contain only a single item.
 
 Each grouping field is a list of tags that serve as fallback. For example, if you want to group
 songs by an `albumartist` tag but if some of the songs do not have it, you can define a fallback to
-`artist`. This would be `group_by: [["albumartist", "artist"]]`.
+`artist`. This would be `group_by: [[AlbumArtist, Artist]]`. These are a subset of
+[properties](/configuration/properties#song-properties), some properties like `File` are not
+available here.
 
 The first level is special, it can only define `group_by` with exactly one tag and nothing else. This
 is a limitation that might or might not be lifted in the future.
@@ -98,14 +100,14 @@ Pane(Browser(
         (
             // The first level is special, it can only have one tag with no fallback. This level
             // will contain a list of all the genres in your music database.
-            group_by: [["genre"]],
+            group_by: [[Other("genre")]],
         ),
         (
             // Group all the songs in a given genre by "albumartist" or "artist" if albumartist is
             // not present. This will produce a list of all the artist that have some songs with the given genre.
-            group_by: [["albumartist", "artist"]],
+            group_by: [[AlbumArtist, Artist]],
             // Sort by the same tags as the grouping.
-            sort_by: [["albumartist", "artist"]],
+            sort_by: [[AlbumArtist, Artist]],
             // Display the albumartist value, artist if it does not exist and "no artist" for
             // directory where all songs without either artist or albumartist will be grouped
             // It is highly recommended to only use properties that are in the "group_by". Otherwise
@@ -123,7 +125,7 @@ Pane(Browser(
         ),
         (
             // Group songs for the artist by "album" and "date" with fallback to "originaldate"
-            group_by: [["album"], ["date", "originaldate"]],
+            group_by: [[Album], [Other("date"), Other("originaldate")]],
             // Display "(1-1-1900) album name" as the format
             format: [
                 (kind: Group([
