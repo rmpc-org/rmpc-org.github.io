@@ -146,11 +146,11 @@ Pane(Browser(
 
 ### Volume
 
-<ConfigValue name="Volume" customText="Pane(Volume(kind: Slider(<config>)))" />
+<ConfigValue name="Volume" customText="Pane(Volume(kind: Slider(<config>) | VerticalSlider(<config>))" />
 
 The Volume pane provides an interactive volume slider with mouse support. You can click to set volume directly or use scroll wheel to adjust volume in steps.
 
-Currently, only the `Slider` kind is supported.
+Currently, both the `Slider` and `VerticalSlider` kinds are supported.
 
 <ConfigValue
     name="kind"
@@ -180,6 +180,25 @@ Volume(
             filled: "─",
             thumb: "●",
             track: "─",
+            end: "♫",
+        ),
+        track_style: (fg: "gray"),
+        filled_style: (fg: "green"),
+        thumb_style: (fg: "white"),
+    )
+)
+```
+
+or
+
+```rust
+Volume(
+    kind: VerticalSlider(
+        symbols: (
+            start: "♪",
+            filled: "|",
+            thumb: "●",
+            track: "|",
             end: "♫",
         ),
         track_style: (fg: "gray"),
