@@ -14,10 +14,14 @@ set in your MPD's configuration to use this functionality.
 
 You can display these stickers using the `Sticker("<name>")` property.
 
+These stickers aim to be compatible with the Compatible with the growing spec at
+[mpd-stickers](https://github.com/jcorporation/mpd-stickers).
+
 ## Stickers used by rmpc
 
-| Name      | Description                                                                                                                                                                                                  |
-| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| rating    | Used to store ratings. Has to be a valid positive integer in the 0-10 range. Numbers outside this range are permitted too if configured to do so but might not work in other MPD clients/rmpc functionality. |
-| like      | Used to store like status. Possible values are `0`, `1` and `2` meaning "disliked", "neutral" and "liked" respectively                                                                                       |
-| playCount | How many times a song was played. Requires [configuration](/guides/on_song_change/#track-song-play-count).                                                                                                   |
+| Name         | Description                                                                                                                                                                                                                                                                                               |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `rating`     | Used to store ratings. Has to be a valid positive integer in the 0-10 range. Numbers outside this range are permitted too if configured to do so but might not work in other MPD clients/rmpc functionality.                                                                                              |
+| `like`       | Used to store like status. Possible values are `0`, `1` and `2` meaning "disliked", "neutral" and "liked" respectively                                                                                                                                                                                    |
+| `playCount`  | How many times a song was played. Requires [configuration](/guides/on_song_change/#track-song-play-count).                                                                                                                                                                                                |
+| `lastPlayed` | Unix timestamp (seconds) of the last time the song was played. Read by the [RecentlyPlayed](/configuration/panes#recentlyplayed) pane. Must be written by an external tool such as an [rmpcd plugin](https://github.com/rmpc-org/rmpcd-lastplayed) or an [`on_song_change`](/guides/on_song_change) hook. |
