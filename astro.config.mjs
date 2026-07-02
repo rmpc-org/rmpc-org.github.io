@@ -33,8 +33,10 @@ export default defineConfig({
                 {
                     tag: "link",
                     attrs: {
-                        rel: "sitemap",
-                        content: "/sitemap-index.xml",
+                        rel: "alternate",
+                        type: "application/xml",
+                        title: "Sitemap",
+                        href: "/sitemap-index.xml",
                     },
                 },
             ],
@@ -131,9 +133,12 @@ export default defineConfig({
                 Header: "./src/components/Header.astro",
                 Banner: "./src/components/Banner.astro",
                 ContentPanel: "./src/components/ContentPanel.astro",
+                Head: "./src/components/Head.astro",
             },
         }),
         react(),
-        sitemap(),
+        sitemap({
+            filter: (page) => !/^https?:\/\/[^/]+\/\d+\.\d+\.\d+\//.test(page),
+        }),
     ],
 });

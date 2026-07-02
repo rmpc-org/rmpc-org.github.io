@@ -1,0 +1,9 @@
+---
+import Default from "@astrojs/starlight/components/Head.astro";
+
+const path = Astro.url.pathname;
+const isVersioned = /^\/\d+\.\d+\.\d+(\/|$)/.test(path);
+---
+
+{isVersioned && <meta name="robots" content="noindex, follow" />}
+<Default><slot /></Default>
