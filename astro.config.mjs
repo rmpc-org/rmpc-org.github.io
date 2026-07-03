@@ -113,7 +113,7 @@ export default defineConfig({
                 },
             ],
             editLink: {
-                baseUrl: "https://github.com/rmpc-org/docs/edit/master/",
+                baseUrl: "https://github.com/rmpc-org/rmpc-org.github.io/edit/master/",
             },
             social: [
                 {
