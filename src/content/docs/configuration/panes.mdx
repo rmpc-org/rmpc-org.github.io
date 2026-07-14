@@ -29,7 +29,7 @@ Rmpc has several pane_types which can be displayed. These are:
 | `AlbumArtists`                       | Browse music library by `albumartist` tag. Is an alias for `Browser` pane with "albumartist" and "album" levels.                                                                                                                                                            |
 | `Albums`                             | Browse music library by `album` tag. Is an alias for `Browser` pane with just an "album" level.                                                                                                                                                                             |
 | `Playlists`                          | Browse saved playlists.                                                                                                                                                                                                                                                     |
-| `RecentlyPlayed()`                   | Browse recently played songs, ordered by the `lastPlayed` sticker. See the [RecentlyPlayed](#recentlyplayed) section for configuration options.                                                                                                                             |
+| `Sticker()`                          | Browse songs ordered by an arbitrary MPD sticker. See the [Sticker](#sticker) section for configuration options.                                                                                                                                                            |
 | `Search`                             | Search music library.                                                                                                                                                                                                                                                       |
 | `Lyrics`                             | Display synced lyrics.                                                                                                                                                                                                                                                      |
 | `ProgressBar`                        | Displays the progress of the currently playing song.                                                                                                                                                                                                                        |
@@ -74,40 +74,54 @@ Pane(Property(
 )),
 ```
 
-### RecentlyPlayed
+### Sticker
 
-<ConfigValue name="RecentlyPlayed" customText="Pane(RecentlyPlayed(format: <property[]>?, limit: <number>?))" />
+<ConfigValue
+    name="Sticker"
+    customText="Pane(Sticker(sticker: <string>, format: <property[]>?, limit: <number>?, sort: <sort>?))"
+/>
 
-A browser pane that lists recently played songs in reverse chronological order, driven by the
-`lastPlayed` sticker (see [stickers](/configuration/stickers)). The pane uses the standard
-three-column browser layout and supports all common browser actions (add to queue, rate, show info,
-etc.).
+A browser pane that lists songs ordered by an arbitrary MPD [sticker](/configuration/stickers). The
+pane uses the standard three-column browser layout and supports all common browser actions (add to
+queue, rate, show info, etc.).
+
+A common use is a "recently played" view driven by the `lastPlayed` sticker (`sticker: "lastPlayed",
+sort: ValueIntDesc`).
 
 :::note
-The `lastPlayed` sticker must be written by an external tool such as an [rmpcd
+The sticker must be written by an external tool. For `lastPlayed` this can be an [rmpcd
 plugin](https://github.com/rmpc-org/rmpcd-lastplayed) or an
 [`on_song_change`](/guides/on_song_change) hook. rmpc itself does not track play history.
 :::
 
 #### Options
 
-| Option   | Type               | Default                          | Description                                                                                                             |
-| -------- | ------------------ | -------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `format` | `property[]`       | `browser_song_format` from theme | Controls how each song is displayed. Uses the same [property](/configuration/properties) syntax as other browser panes. |
-| `limit`  | `number` or `None` | `None` (fetch all)               | Maximum number of songs to show. `None` fetches the entire history.                                                     |
+| Option    | Type               | Default                          | Description                                                                                                             |
+| --------- | ------------------ | -------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `sticker` | `string`           | _(required)_                     | Name of the MPD sticker to read and order songs by.                                                                     |
+| `format`  | `property[]`       | `browser_song_format` from theme | Controls how each song is displayed. Uses the same [property](/configuration/properties) syntax as other browser panes. |
+| `limit`   | `number` or `None` | `None` (fetch all)               | Maximum number of songs to show. `None` fetches every matching song.                                                    |
+| `sort`    | `sort`             | `Uri`                            | Ordering of the results. One of `Uri`, `UriDesc`, `Value`, `ValueDesc`, `ValueInt`, `ValueIntDesc`.                     |
+
+The `sort` variants ending in `Desc` sort in descending order. `Value` sorts
+the sticker value lexicographically (as a string), while `ValueInt` sorts it
+numerically, ensure that the stickers only have numerical values when using
+`ValueInt`.
 
 #### Example
 
 ```rust
-// Minimal — show all history, inherit global browser_song_format
-Pane(RecentlyPlayed())
+// Minimal - show every song that has any `like` sticker value , inherit global browser_song_format
+Pane(Sticker(sticker: "like"))
 
-// Show last 50 songs with a custom format
-Pane(RecentlyPlayed(
+// "Recently played" — last 50 songs, newest first, with a custom format
+Pane(Sticker(
+    sticker: "lastPlayed",
+    sort: ValueIntDesc,
     limit: Some(50),
     format: [
         (kind: Property(Artist), default: (kind: Text("Unknown Artist"))),
-        (kind: Text(" — ")),
+        (kind: Text(" - ")),
         (kind: Property(Title), default: (kind: Text("Unknown Title"))),
     ],
 ))
