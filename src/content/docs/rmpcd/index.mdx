@@ -31,8 +31,11 @@ Features:
 
 ## Installation
 
-Rmpcd can currently only be installed from the source code. This assumes you have git and rust
-installed already.
+Rmpcd can currently only be built from source code or installed via Nix using the provided flake. 
+
+### Building from source
+
+This assumes you have git and rust installed already.
 
 ```bash
 # Either with cargo directly
@@ -42,6 +45,20 @@ cargo install --git https://github.com/mierak/rmpc.git rmpcd
 git clone https://github.com/mierak/rmpc.git
 cd rmpc
 cargo run --package rmpcd
+```
+
+### NixOS
+
+With the flake added to your flake inputs, add the package to your system configuration:
+
+```nix title="configuration.nix"
+{ inputs, pkgs, ... }:
+
+{
+  environment.systemPackages = with pkgs; [
+    inputs.rmpc.packages.${pkgs.stdenv.hostPlatform.system}.rmpcd;
+  ];
+}
 ```
 
 ## Setup
