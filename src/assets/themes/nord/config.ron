@@ -57,7 +57,13 @@
         (name: "Album Artists", pane: Split(direction: Horizontal, panes: [
             (size: "100%", borders: "ALL", border_symbols: Rounded, pane: Pane(Browser(
                 levels: [
-                    (group_by: [[AlbumArtist]]),
+                    (
+                        group_by: [[AlbumArtist]],
+                        sort_by: [[AlbumArtist]],
+                        format: [
+                            (kind: Property(AlbumArtist), default: (kind: Text("<no albumartist>"))),
+                        ],
+                    ),
                     (
                         group_by: [[Album], [Other("date"), Other("originaldate")]],
                         format: [
@@ -148,5 +154,47 @@
         ])),
         (name: "Search", pane: Split(direction: Horizontal, panes: [
             (size: "100%", borders: "ALL", border_symbols: Rounded, pane: Pane(Search)),
+        ])),
+        (name: "History", pane: Split(direction: Horizontal, panes: [
+            (size: "100%", borders: "ALL", border_symbols: Rounded,
+                border_title: [
+                    (kind: Text("[ "), style: (fg: "#81a1c1")),
+                    (kind: Text("History"), style: (fg: "#d8dee9")),
+                    (kind: Text(" ]"), style: (fg: "#81a1c1")),
+                ],
+                border_title_position: Top,
+                border_title_alignment: Center,
+                pane: Pane(Sticker(
+                    sticker: "lastPlayed",
+                    sort: ValueIntDesc,
+                    limit: Some(10),
+                    format: [
+                        (kind: Property(Artist), default: (kind: Text("Unknown Artist"))),
+                        (kind: Text(" - ")),
+                        (kind: Property(Title), default: (kind: Text("Unknown Title"))),
+                    ],
+                ))
+            ),
+        ])),
+        (name: "Most Played", pane: Split(direction: Horizontal, panes: [
+            (size: "100%", borders: "ALL", border_symbols: Rounded,
+                border_title: [
+                    (kind: Text("[ "), style: (fg: "#81a1c1")),
+                    (kind: Text("Most Played"), style: (fg: "#d8dee9")),
+                    (kind: Text(" ]"), style: (fg: "#81a1c1")),
+                ],
+                border_title_position: Top,
+                border_title_alignment: Center,
+                pane: Pane(Sticker(
+                    sticker: "playCount",
+                    sort: ValueIntDesc,
+                    limit: Some(50),
+                    format: [
+                        (kind: Property(Artist), default: (kind: Text("Unknown Artist"))),
+                        (kind: Text(" - ")),
+                        (kind: Property(Title), default: (kind: Text("Unknown Title"))),
+                    ],
+                ))
+            )
         ])),
     ],
