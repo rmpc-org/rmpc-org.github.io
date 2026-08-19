@@ -185,6 +185,7 @@ list and controlling search mode.
 |                                     `oi`                                      | ShowInfo                                    | Show info about the item under cursor in a modal popup                                                                             |
 |                                    `<C-x>`                                    | ContextMenu()                               | Show a context menu with select few actions that can be done on the current item(s)                                                |
 |                                   `<C-s>s`                                    | [Save(..)](#save)                           | Save selected item(s) to a playlist with specified options. More info [in its section](#save)                                      |
+|                                   `<C-s>c`                                    | [Save(..)](#save)                           | Save the currently playing song to a playlist with specified options. More info [in its section](#save)                            |
 |                                   `<C-s>a`                                    | [Save(..)](#save)                           | Save all item in the directory/queue to a playlist with specified options. More info [in its section](#save)                       |
 |                                      `r`                                      | [Rate()](#rate)                             | Set song rating, must have [stickers](/configuration/stickers) configured                                                          |
 |                                      `y`                                      | [CopyToClipboard()](#copytoclipboard)       | Copy item to the clipboard. More info [in its section](#copytoclipboard)                                                           |
@@ -288,14 +289,14 @@ Rate(kind: Modal(values: [], custom: false, like: true), current: false),
 #### Save
 
 A configurable keybind used to manipulate playlists. Allows you to save either a single or all items
-under the cursor in browser panes to either a new or an existing playlist.
+under the cursor in browser panes, or the currently playing song, to either a new or an existing playlist.
 
 A modal window with options to select is displayed instead when no configuration is provided or if
 the keybind is directly configured to display a modal.
 
 #### Syntax
 
-`Save(kind: <kind>)`
+`Save(kind: <kind>, current: <bool>)`
 
 Possible values for the action `<kind>` are either a `Modal()` or `Playlist()`.
 
@@ -309,6 +310,8 @@ Both kinds also take additional options:
 
 - `all` - Controls whether to add all items in the current directory or just the marked ones/the
   one under the cursor. Can be either `true` or `false`. Defaults to `false`.
+- `current` - Controls whether to save the currently playing song instead of the items under the cursor.
+  Can be either `true` or `false`. Defaults to `false`. When set to `true`, the `all` option is ignored.
 - `duplicates_strategy` - what to do when the playlist you are adding songs to already contains some
   or all of the songs you are adding. Possible values are: `All`, `None`, `NonDuplicate`, `Ask`. These
   add all the songs anyway, no songs at all, only the non duplicate songs or display a modal asking
