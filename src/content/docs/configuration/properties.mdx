@@ -373,6 +373,15 @@ about parameters and examples. All the examples below assume that the properties
 ])))'
 
         },
+        {
+            cells: ["`Hash(...)`", "Color the value by hashing it against a palette so equal values always share a color"],
+            parameters: [
+                { name: "`content`", type: "Property", description: "content whose rendered text is hashed and colored" },
+                { name: "`colors`", type: "array", description: "palette of colors to pick from. An empty palette leaves the content unstyled" },
+            ],
+            exampleDescription: "Color each artist so the same artist always shows in the same color while different artists spread across the palette",
+            example: '(kind: Transform(Hash(content: (kind: Property(Song(Artist))), colors: ["red", "green", "blue", "magenta", "cyan"])))',
+        },
     ]}
 
 />
