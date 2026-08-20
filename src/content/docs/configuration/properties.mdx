@@ -309,6 +309,24 @@ about parameters and examples. All the examples below assume that the properties
             cells: ["`Channels()`", "Channel count of the currently playing file"],
             example: '(kind: Property(Status(Channels()))),'
         },
+        {
+            cells: ["`ActiveOutput(...)`", "On/off lamp for the named output on the current partition. An output that was moved to another partition shows the off label"],
+            parameters: [
+                { name: "`name`", type: "String", description: "required, name of the output" },
+                { name: "`on_label`", type: "String", description: "optional, defaults to `name`" },
+                { name: "`off_label`", type: "String", description: "optional, defaults to `name`. Set to an empty string to hide the lamp while the output is disabled" },
+                { name: "`on_style`", type: "Style", description: "optional" },
+                { name: "`off_style`", type: "Style", description: "optional" },
+            ],
+            example: '(kind: Property(Status(ActiveOutput(name: "Speakers")))),'
+        },
+        {
+            cells: ["`ActiveOutputs(...)`", "Names of the enabled outputs on the current partition, joined by `separator`"],
+            parameters: [
+                { name: "`separator`", type: "String", description: "optional, defaults to `, `" },
+            ],
+            example: '(kind: Property(Status(ActiveOutputs()))),'
+        },
     ]}
 
 />
