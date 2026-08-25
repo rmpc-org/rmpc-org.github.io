@@ -131,11 +131,11 @@ about parameters and examples. All the examples below assume that the properties
             example: '(kind: Property(Song(Position))),'
         },
         {
-            cells: ["`SampleRate()`", "Sample rate of the file"],
+            cells: ["`SampleRate()`", "Sample rate of the file. DSD files report the DSD rate itself, for example 2822400 for DSD64"],
             example: '(kind: Property(Song(SampleRate()))),'
         },
         {
-            cells: ["`Bits()`", "Bit depth (bits per sample) of the file"],
+            cells: ["`Bits()`", "Bit depth (bits per sample) of the file. DSD is 1 bit. Float files report no bit depth, so `default:` applies"],
             example: '(kind: Property(Song(Bits()))),'
         },
         {
@@ -298,11 +298,11 @@ about parameters and examples. All the examples below assume that the properties
             example: '(kind: Property(Status(InputMode()))),'
         },
         {
-            cells: ["`SampleRate()`", "Sample rate of the currently playing file"],
+            cells: ["`SampleRate()`", "Sample rate of the currently playing file. DSD files report the DSD rate itself, for example 2822400 for DSD64"],
             example: '(kind: Property(Status(SampleRate()))),'
         },
         {
-            cells: ["`Bits()`", "Bit depth (bits per sample) of the currently playing file"],
+            cells: ["`Bits()`", "Bit depth (bits per sample) of the currently playing file. DSD is 1 bit. Float files report no bit depth, so `default:` applies"],
             example: '(kind: Property(Status(Bits()))),'
         },
         {
