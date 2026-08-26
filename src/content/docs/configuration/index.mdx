@@ -474,6 +474,14 @@ songs and playlists and reverse the ordering respectively.
 
 Defaults to `SortFormat(group_by_type: true, reverse: false)`.
 
+### directories_hidden_dirs
+
+<ConfigValue name="directories_hidden_dirs" type="other" customText="string[]" />
+
+A list of directory names to hide from the Directories pane. Directories are matched by their
+name at any depth, for example `[".Trash-1000"]` hides every directory named `.Trash-1000`.
+Defaults to `[]`.
+
 ### show_playlists_in_browser
 
 <ConfigValue name="show_playlists_in_browser" type={["All", "None", "NonRoot"]} />
