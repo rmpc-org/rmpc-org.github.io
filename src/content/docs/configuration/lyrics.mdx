@@ -7,9 +7,15 @@ sidebar:
 
 ## Lyrics
 
-Rmpc supports displaying [synchronized lyrics](<https://en.wikipedia.org/wiki/LRC_(file_format)>) in the `Lyrics` pane.
-Other lyrics formats are not supported. The `lyrics_dir` must be configured for the resolution to work. All `lrc` files
-must be on the client side.
+Rmpc supports displaying synchronized lyrics in the `Lyrics` pane. Supported formats are currently
+[LRC](<https://en.wikipedia.org/wiki/LRC_(file_format)>) and the new
+[lyricsfile](https://lrclib.net/lyricsfile) format. Other lyrics formats are not supported. The
+`lyrics_dir` must be configured for the resolution to work. All `lrc` files must be on the client
+side.
+
+If you do not know which format to choose, choose `lyricsfile`. Its spec is in its infancy but is
+already a huge improvement over the `lrc` which does not even have a formal specification and is
+more of a convention.
 
 ### LRC file format
 
@@ -58,14 +64,18 @@ LRC files are text files with a specific structure:
 
 ### Lrc file resolution
 
-Lrc files are resolved by rmpc via two methods (in order):
+Lrc files are resolved by rmpc via three methods (in order):
 
-- Same path as the song file, except with the `.lrc` file extension
+- Same path as the song file, except with the `.lyricsfile.yaml` file extension, ie. `track.mp3`
+  would become `track.lyricsfile.yaml`
+- Same path as the song file, except with the `.lrc` file extension, ie. `track.mp3` would become
+  `track.lrc`
 - By indexing all the `.lrc` files in the `lyrics_dir`
 
 #### Lyrics index
 
-Rmpc will create an index of all `.lrc` files in your `lyrics_dir` on startup.
+Rmpc will create an index of all `.lrc` (`lyricsfile`s are currently not indexed) files in your
+`lyrics_dir` on startup.
 
 **How songs match to LRC files:**
 
