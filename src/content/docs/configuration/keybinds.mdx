@@ -425,6 +425,17 @@ Possible values for `all`:
 - `true` - Add all items in the current directory
 - `false` - Add all marked items and only the hovered item if non are marked
 
+Possible values for `preserve_order` (defaults to `true`):
+
+- `true` - Directories are listed on the client and their songs are added in the order the browser
+  shows them, respecting `directories_sort`.
+- `false` - Directories are handed to MPD as they are and MPD adds their songs in its own order.
+  This is much faster for large libraries because rmpc does not have to resolve every single song
+  first.
+
+Items in the tag browser panes (artists, albums, ...) are not affected by `preserve_order`. Items
+whose songs were already loaded are added in the browser's order, the rest is added by MPD directly.
+
 ##### Examples
 
 - Add a single item or the marked items at the end of the queue
@@ -445,6 +456,13 @@ AddOptions(kind: Action(all: false, autoplay: Hovered, position: StartOfQueue))
 
 ```rust showLineNumbers=false
 AddOptions(kind: Action(all: false, autoplay: HoveredOrFirst, position: AfterCurrentSong))
+```
+
+- Replace the queue with everything in the current directory, letting MPD add the directories
+  itself. Useful for very large libraries.
+
+```rust showLineNumbers=false
+AddOptions(kind: Action(all: true, autoplay: First, position: Replace, preserve_order: false))
 ```
 
 - Open a modal window with the default configuration
