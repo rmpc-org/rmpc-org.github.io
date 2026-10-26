@@ -43,6 +43,9 @@ After that you need to setup Cava, MPD and rmpc to talk to each other.
         framerate: 60, // default 60
         autosens: true, // default true
         sensitivity: 100, // default 100
+        waveform: false, // default false. show a waveform instead of the frequency spectrum
+        waveform_sync: false, // default false. align waveform to a rising zero crossing
+        waveform_duration: 50, // default 50. the visible waveform duration in milliseconds, 10 - 250
         lower_cutoff_freq: 50, // not passed to cava if not provided
         higher_cutoff_freq: 10000, // not passed to cava if not provided
         input: (
