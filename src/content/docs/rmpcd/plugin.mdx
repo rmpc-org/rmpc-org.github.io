@@ -23,6 +23,12 @@ The function takes `self` as a first argument and `Args` as the second.
 The setup function can contain only primitive values, not functions.
 :::
 
+### start
+
+A function that will be called exactly once, after rmpcd has connected to MPD and all plugins have
+been loaded. It is not called again when the connection to MPD is re-established, use `reconnect`
+for that. Takes `self` as the only argument.
+
 ### song_change
 
 A function that will be called when a song changes.
