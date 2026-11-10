@@ -24,6 +24,7 @@ These modules are available on the global scope
 - [http](#http) - A simple HTTP client
 - [log](#log) - Logging facilities
 - [process](#process) - To spawn external programs
+- [socket](#socket) - Unix domain socket client
 - [sync](#sync) - Utilities to for asynchronous execution
 - [util](#util) - Set of random utility functions that do not fit anywhere else
 
@@ -465,11 +466,17 @@ Each of the http functions takes an opts table.
         {
             cells: ["`params`", "table<string, string> to send as query parameters "],
         },
+        {
+            cells: [
+                "`timeout_ms`",
+                "Request timeout in milliseconds. The response has `error` set when it is exceeded",
+            ],
+        },
     ]}
 />
 
-The `get` function only takes `headers` and `params` in opts.
-The `post` function only takes `headers`, `params` and body in opts.
+The `get` function only takes `headers`, `params` and `timeout_ms` in opts.
+The `post` function only takes `headers`, `params`, `body` and `timeout_ms` in opts.
 
 ### Response
 
@@ -549,8 +556,102 @@ Spawn external processes. Available on the global scope by accessing the `proces
                 { type: "`string | nil`", description: "Error message if any" },
             ],
         },
+        {
+            cells: ["`pid`", "Get the PID of rmpcd itself"],
+            returns: [{ type: "`number`", description: "The process ID" }],
+        },
     ]}
 />
+
+## Socket
+
+Unix domain socket client. Available on the global scope by accessing the `socket` table.
+
+Chunk boundaries are arbitrary, framing is up to the plugin.
+
+<PropertyTable
+    headers={["Function", "Description"]}
+    rows={[
+        {
+            cells: ["`connect_unix`", "Connect to a Unix domain socket"],
+            parameters: [
+                { name: "`path`", type: "string", description: "Path to the socket file" },
+                { name: "`handlers`", type: "UnixSocketHandlers", description: "Handlers and options, see below" },
+            ],
+            returns: [
+                { type: "`UnixSocket | nil`", description: "The connected socket if successful" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+    ]}
+/>
+
+### Handlers
+
+<PropertyTable
+    headers={["Property", "Description"]}
+    rows={[
+        {
+            cells: ["`on_data`", "`fun(data: string)`, called with raw bytes as they arrive"],
+        },
+        {
+            cells: [
+                "`on_close`",
+                "`fun(reason: string | nil)`, optional. Called once when the peer closes the connection (`nil`) or it fails (error message). Not called after `close`",
+            ],
+        },
+        {
+            cells: [
+                "`write_timeout_ms`",
+                "Optional, how long a single `write` may take in milliseconds, 5000 by default. The socket is closed on timeout",
+            ],
+        },
+    ]}
+/>
+
+### UnixSocket
+
+The socket returned by `connect_unix` has the following functions. Call them with `:`.
+
+<PropertyTable
+    headers={["Function", "Description"]}
+    rows={[
+        {
+            cells: ["`write`", "Write raw bytes to the socket"],
+            parameters: [{ name: "`data`", type: "string", description: "Bytes to write" }],
+            returns: [
+                { type: "`boolean`", description: "Whether the call was successful" },
+                {
+                    type: "`string | nil`",
+                    description:
+                        'Error message if any. `"closed"` once the socket is closed, `"timeout"` when the peer did not read in time',
+                },
+            ],
+        },
+        {
+            cells: [
+                "`close`",
+                "Close the socket, no handlers are called after this. Always call it when done, a socket that is merely dropped is only closed by the garbage collector",
+            ],
+        },
+    ]}
+/>
+
+```lua
+local sock, err = socket.connect_unix("/run/user/1000/app.sock", {
+    on_data = function(data)
+        log.info("received " .. #data .. " bytes")
+    end,
+    on_close = function(reason)
+        log.warn("socket closed: " .. (reason or "by peer"))
+    end,
+})
+if sock == nil then
+    log.error("connect failed: " .. err)
+    return
+end
+sock:write("hello")
+```
 
 ## Sync
 
@@ -602,6 +703,10 @@ Execute things asynchronously. Available on the global scope by accessing the `s
                 },
             ],
         },
+        {
+            cells: ["`sleep`", "Suspend the plugin for the given time. No events are processed while sleeping"],
+            parameters: [{ name: "`ms`", type: "number", description: "Time in milliseconds" }],
+        },
     ]}
 />
 
@@ -640,6 +745,22 @@ the `util` table.
             parameters: [{ name: "`data`", type: "number[]", description: "Input bytes" }],
             returns: [
                 { type: "`any | nil`", description: "Deserialized value if success" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`json_encode`", "Encode a value as JSON. Empty tables become objects, sequences become arrays"],
+            parameters: [{ name: "`value`", type: "any", description: "Value to encode" }],
+            returns: [
+                { type: "`string | nil`", description: "JSON text if successful" },
+                { type: "`string | nil`", description: "Error message if any" },
+            ],
+        },
+        {
+            cells: ["`json_decode`", "Decode JSON text. JSON `null` decodes to a null value, see `nil_or_null`"],
+            parameters: [{ name: "`text`", type: "string", description: "JSON text" }],
+            returns: [
+                { type: "`any | nil`", description: "Decoded value if successful" },
                 { type: "`string | nil`", description: "Error message if any" },
             ],
         },
