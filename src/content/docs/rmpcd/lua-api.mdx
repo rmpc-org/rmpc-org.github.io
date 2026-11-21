@@ -215,7 +215,7 @@ They are available on global scope by accessing the `mpd` table.
         {
             cells: ["`get_status`", "Returns MPD's current status info"],
             returns: [
-                { type: "`MpdStatus`", description: "MPD's current status" },
+                { type: "`MpdStatus | nil`", description: "MPD's current status if successful" },
                 { type: "`string | nil`", description: "Error message if any" },
             ],
         },
@@ -403,7 +403,7 @@ Filesystem API. These are available on global scope by accessing the `fs` table.
             ],
         },
         {
-            cells: ["`remove_dir`", "Remove a directory recursively"],
+            cells: ["`remove_dir_all`", "Remove a directory recursively"],
             parameters: [{ name: "`path`", type: "string", description: "Directory path" }],
             returns: [
                 { type: "`boolean`", description: "Whether the directory was deleted" },
@@ -440,7 +440,7 @@ A simple HTTP client. Available on the global scope by accessing the `http` tabl
             cells: ["`post`", "Do a POST request"],
             parameters: [
                 { name: "`url`", type: "string", description: "URL to call to" },
-                { name: "`opts`", type: "HttpGetOpts", description: "Options for the POST HTTP request" },
+                { name: "`opts`", type: "HttpPostOpts", description: "Options for the POST HTTP request" },
             ],
             returns: [{ type: "`HttpResponse`", description: "The response, see below for more details" }],
         },
@@ -496,11 +496,19 @@ The response is a table with following properties and functions:
         },
         {
             cells: ["`text`", "Gets the body text"],
-            returns: [{ type: "`string`", description: "The body" }],
+            returns: [
+                { type: "`string | nil`", description: "The body, nil if the request failed before a body was read" },
+            ],
         },
         {
-            cells: ["`json`", "Gets the body json as a table"],
-            returns: [{ type: "`table`", description: "The json value" }],
+            cells: ["`json`", "Decodes the body as JSON"],
+            returns: [
+                {
+                    type: "`any | nil`",
+                    description:
+                        "The json value, nil if the request failed before a body was read. Raises an error if the body is not valid JSON",
+                },
+            ],
         },
     ]}
 />
@@ -674,7 +682,10 @@ Execute things asynchronously. Available on the global scope by accessing the `s
             ],
         },
         {
-            cells: ["`set_interval`", "Schedule a function to run repeatedly with an interval"],
+            cells: [
+                "`set_interval`",
+                "Schedule a function to run repeatedly with an interval. Runs the callback immediately, then every interval",
+            ],
             parameters: [
                 { name: "`interval_ms`", type: "number", description: "Interval in milliseconds" },
                 { name: "`callback`", type: "function", description: "A function to run every interval tick" },
@@ -741,7 +752,7 @@ the `util` table.
             returns: [{ type: "`boolean`", description: "Whether the value is nil or nul" }],
         },
         {
-            cells: ["`deserialize_ron `", "Deserialize a ron value"],
+            cells: ["`deserialize_ron`", "Deserialize a ron value"],
             parameters: [{ name: "`data`", type: "number[]", description: "Input bytes" }],
             returns: [
                 { type: "`any | nil`", description: "Deserialized value if success" },
