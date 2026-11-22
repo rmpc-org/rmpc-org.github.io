@@ -19,17 +19,19 @@ changes to everything.
 
 ## Features
 
-Features:
-
-- Lua plugin API
+- Fully configurable with Lua
 - MPRIS server implementation
-- A few built in plugins:
-    - [LastFM scrobbling](https://github.com/mierak/rmpc/blob/master/rmpcd/src/lua/builtin/lastfm.lua)
-    - [Playcount tracking](https://github.com/mierak/rmpc/blob/master/rmpcd/src/lua/builtin/playcount.lua)
-    - [Desktop notifications](https://github.com/mierak/rmpc/blob/master/rmpcd/src/lua/builtin/notify.lua)
-    - [Lyrics download](https://github.com/mierak/rmpc/blob/master/rmpcd/src/lua/builtin/lyrics.lua)
-- [Plugins](/rmpcd/community-plugins) created by the community
+- Idle inhibition when music is playing
+- Full plugin support
 - Built in plugin manager
+- A few official plugins:
+    - [Last.fm](https://github.com/rmpc-org/rmpcd-lastfm)
+    - [Playcount](https://github.com/rmpc-org/rmpcd-playcount)
+    - [Notify](https://github.com/rmpc-org/rmpcd-notify)
+    - [Lyrics](https://github.com/rmpc-org/rmpcd-lyrics)
+    - [Discord rich presence](https://github.com/rmpc-org/rmpcd-discord-rich-presence)
+    - [Last played](https://github.com/rmpc-org/rmpcd-lastplayed)
+- A growing list of [community created plugins](/rmpcd/community-plugins#community-plugins)
 
 ## Installation
 
@@ -64,7 +66,7 @@ With the flake added to your flake inputs, add the package to your system config
 
 {
   environment.systemPackages = with pkgs; [
-    inputs.rmpc.packages.${pkgs.stdenv.hostPlatform.system}.rmpcd;
+    inputs.rmpc.packages.${pkgs.stdenv.hostPlatform.system}.rmpcd
   ];
 }
 ```
@@ -80,14 +82,16 @@ rmpcd init
 2026-03-28T23:42:17.918924Z  INFO rmpcd/src/main.rs:124: Created Lua API type definitions at '/home/<user>/.local/share/rmpcd/lua'
 ```
 
-This will create a default `init`.lua at the path shown in the log. It will also generate a
+This will create a default `init.lua` at the path shown in the log. It will also generate a
 `.luarc.json` file pointing to the type definitions, allowing your editor to provide autocompletion
 if you have the [Lua language server](https://github.com/LuaLS/lua-language-server) installed and
 configured.
 
-Rmpcd will keep the generated type definitions up to date automatically. Make sure to not edit these
+Installing plugins will also download their type definitions and they should work automatically.
+
+Rmpcd will keep the generated type definitions up to date automatically. Make sure not to edit these
 files directly.
 
-The generated `init.lua.` is shown below for reference:
+The generated `init.lua`. is shown below for reference:
 
 <Code code={initlua} lang="lua" title="init.lua" frame="terminal" />
