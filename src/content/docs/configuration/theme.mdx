@@ -437,12 +437,6 @@ Defaults to `Track Artist - Title`:
 <summary>Click to expand</summary>
 
 ```rust
-browser_song_format: "[$track ' '][$artist ' - ' $title]|$filename",
-```
-
-or equivalent:
-
-```rust
 browser_song_format: [
     (
         kind: Group([
@@ -473,6 +467,6 @@ Sets the visibility of the timestamps in the lyrics pane.
 
 #### lyrics.alignment
 
-<ConfigValue name="lyrics.alignment" type={["Left", "Center", "Right"]}  />
+<ConfigValue name="lyrics.alignment" type={["Left", "Center", "Right"]} />
 
 Sets the alignment of the displayed lyrics.
